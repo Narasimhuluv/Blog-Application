@@ -1,6 +1,9 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
-import {validations} from '../utls/Validation'
+import {validations} from '../utls/Validation';
+import {api} from '../utls/ApiLinks';
+import {withRouter} from 'react-router';
+
 
 class Login extends React.Component {
     constructor(){
@@ -14,6 +17,41 @@ class Login extends React.Component {
             }
         }
     }
+    login = () => {
+        fetch(api + `/users/login` , {
+            method :  'POST',
+            mode : 'cors',
+            cache : 'no-cache',
+            credentials : 'same-origin',
+            headers : {
+                'Content-Type' : 'application/json',
+                // Authorization:  ,
+                
+            },
+            redirect : 'follow',
+            referrerPolicy : 'no-referrer',
+            body : JSON.stringify({
+                user  : {
+                    email : this.state.email,
+                    password : this.state.password,
+                },
+            }),
+
+        }).then((res) => {
+            if(!res.ok){
+                 throw new Error(res.statusText())
+            }else{
+                return res.json()
+            }
+        }).then((userData) => {
+            // console.log(userData , "userDAta")
+            // console.log(this.state.user)
+            this.props.onUpdateUser(userData.user)
+                this.props.history.push("/")
+            
+        })
+    }
+    
     handleChange = ({ target }) => {
         let { name, value } = target;
         let { errors } = this.state;
@@ -21,19 +59,22 @@ class Login extends React.Component {
         this.setState({ [name]: value, errors });
       };
     
-      handleSubmit = (event) => {
+    handleSubmit = (event) => {
         event.preventDefault();
-      };
+        // alert(this.state.email, this.state.password)
+        this.login();
+        
+    };
 
         
     render(){
+        console.log(this.props.isLogged)
         let { email, password } = this.state.errors;
         return (
             <section className="container ">
                 <div className="login flex justify-between items-center my-10">
                     <div className="w-6/12 ">
-                        {/* <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_q5pk6p1k.json"  background="transparent"  speed="1"  style={{width : "90%",}}  loop  autoplay></lottie-player> */}
-                        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_mragdxra.json"  background="transparent"  speed="1"  style={{width : "100%",}}  loop  autoplay></lottie-player>
+                        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_mragdxra.json"  background="transparent"  speed="1"  style={{width : "100%"}}  loop  autoplay></lottie-player>
                     </div>
                     <div className="w-6/12 m-auto">
                         <form action="" onSubmit={this.handleSubmit} className="border w-8/12 m-auto shadow-md p-6 py-20 rounded-xl">
@@ -45,7 +86,7 @@ class Login extends React.Component {
                             <input type="password" placeholder="Enter Your Password" className="border my-4 w-full py-2 px-4 rounded-lg" name="password" value={this.state.password} onChange={(e) => this.handleChange(e)} />
                             <span className="text-red-400">{password}</span>
                             <div className="w-full flex items-center mt-4">
-                                <input type="Submit" className=" py-1 px-3 rounded-lg bg-black text-white "/>
+                                <input type="Submit"  className=" py-1 px-3 rounded-lg bg-black text-white "/>
                                 <NavLink to="/register">
                                     <h6 className="w-full ml-1 text-center text-pink-700">Register ?</h6>
                                 </NavLink>
@@ -58,4 +99,4 @@ class Login extends React.Component {
     }
 }   
 
-export default Login
+export default withRouter(Login) ;

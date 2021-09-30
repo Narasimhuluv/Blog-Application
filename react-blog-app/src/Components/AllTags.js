@@ -31,7 +31,7 @@ class AllTags extends React.Component{
                     <div className=" flex justify-between flex-wrap">
                         {
                             filterTags.map((each) => (
-                                each === "" ? null : <button key={each} className={each === true ? "border py-1 px-4 m-1 bg-yellow-500 rounded-lg shadow-md": "border py-1 px-4 m-1 rounded-lg shadow-md"  }  onClick={() => this.props.handleTag(each)}>{each}</button>
+                                each === "" ? null : <button key={each} className="border py-1 px-4 m-1 rounded-lg shadow-md text-sm"   onClick={() => this.props.handleTag(each)}>{each}</button>
                             ))
                         }
                         {/* className="border py-1 px-4 m-1 rounded-lg shadow-md"  */}

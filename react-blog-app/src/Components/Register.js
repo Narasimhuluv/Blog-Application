@@ -1,6 +1,8 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom';
-import {validations} from '../utls/Validation'
+import { api } from '../utls/ApiLinks';
+import {validations} from '../utls/Validation';
+
 
 class Register extends React.Component {
     constructor(){
@@ -23,10 +25,41 @@ class Register extends React.Component {
          validations(errors, name, value);
         this.setState({ [name]: value, errors });
     };
+
+    register = () => {
+        fetch(api + `/users/` , {
+            method :  'POST',
+            mode : 'cors',
+            cache : 'no-cache',
+            credentials : 'same-origin',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            redirect : 'follow',
+            referrerPolicy : 'no-referrer',
+            body : JSON.stringify({
+                user  : {
+                    username : this.state.username,
+                    email : this.state.email,
+                    password : this.state.password,
+                },
+            }),
+
+        }).then((res) => res.json()).then((data) => {
+            console.log(data)
+            this.props.history.push('/users/login');
+            console.log("successfully register")
+        })
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
+        // alert(this.state.username)
+        this.register()
     };
+    
     render(){
+        
         let {username , password, email } = this.state.errors;
         return (
             <section className="container ">

@@ -10,22 +10,33 @@ import NotFound  from './NotFound';
 class App extends React.Component{
     constructor(props){
         super(props);
-        this.state={}
+        this.state={
+            isLogged : false,
+            user : null,
+            isVerifying: true,
+        }
+    }
+    onUpdateUser = (userData) => {
+        this.setState({
+            isLogged : true,
+            user : userData,
+            isVerifying : false
+        })
+        localStorage.setItem("token" , userData.token)
     }
     render(){
         return(
             <div>
-                <Header />
-                <Switch>
-                    <Route exact path="/register">
-                        <Register />
-                    </Route>
-                    <Route exact path="/login">
-                        <Login />
+                <Header {...this.state}/>
+                {/* <Switch>
+                    <Route exact path="/users" component={Register} />
+
+                    <Route exact path="/users/login">
+                        <Login {...this.state} onUpdateUser={this.onUpdateUser}/>
                     </Route>
 
                     <Route exact path="/">
-                        <Home />
+                        <Home {...this.state}/>
                     </Route>
 
                     <Route exact path="/articles/:slug" component={IndividualArticle} />
@@ -33,9 +44,62 @@ class App extends React.Component{
                     <Route path="*">
                         <NotFound />
                     </Route>
-                </Switch>
+                </Switch> */}
+                {
+                    this.state.isLogged ? <Athenticated  {...this.state} onUpdateUser={this.onUpdateUser}/> : <UnAthenticated {...this.state} onUpdateUser={this.onUpdateUser} />
+                }
             </div>
         )
     }
 }
+function UnAthenticated(props){
+    return(
+        <Switch>
+            <Route exact path="/users" component={Register} />
+
+            {/* <Route exact path="/users/login" component={Login} /> */}
+
+            <Route exact path="/users/login">
+                <Login {...props} onUpdateUser={props.onUpdateUser}/>
+            </Route>
+
+            <Route exact path="/">
+                <Home {...props}/>
+            </Route>
+
+            <Route exact path="/articles/:slug" component={IndividualArticle} />
+
+            <Route path="*">
+                <NotFound />
+            </Route>
+        </Switch>
+    )
+}
+
+function Athenticated(props){
+    return(
+        <Switch>
+            {/* <Route exact path="/users" component={Register} /> */}
+
+            {/* <Route exact path="/users/login" component={Login} /> */}
+
+            {/* <Route exact path="/users/login">
+                <Login {...this.state} onUpdateUser={this.onUpdateUser}/>
+            </Route> */}
+
+            <Route exact path="/">
+                <Home {...props}/>
+            </Route>
+
+            <Route exact path="/articles/:slug" component={IndividualArticle} />
+
+            <Route path="*">
+                <NotFound />
+            </Route>
+        </Switch>
+    )
+}
+
+
+
 export default App;

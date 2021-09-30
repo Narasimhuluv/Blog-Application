@@ -9,7 +9,7 @@ function AllArticles(props) {
                 <img src={"/images/articles_images/"+each.slug+".png"} alt="" />
                 <div className="px-4">
                     <h2 className="font-bold">{each.title}</h2>
-                    <h3>{(each.description).slice(0,190)} . . . .</h3>
+                    <p className="text-sm">{(each.description).slice(0,190)} . . . .</p>
                     <NavLink to={`/articles/${each.slug}`}>
                         <button className="py-1 rounded-lg px-4 my-6 bg-black text-white">Read More</button>
                     </NavLink>

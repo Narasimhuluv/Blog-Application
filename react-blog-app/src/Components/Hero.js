@@ -9,7 +9,7 @@ function Hero() {
 
                     <h2 className="Home_heading w-9/12 text-5xl font-extrabold">Blog App is a Place to write, read, and Connect</h2>
                     <p className="my-4 w-8/12 text-lg">It's easy and free to post your thinking on any topic and connect with millions of readers.</p>
-                    <NavLink to="/api/login">
+                    <NavLink to="/users/login">
                         <button className="px-4 py-2 mt-6 text-white bg-black rounded-lg">Start Writing</button>
                     </NavLink>
                 </div>
