@@ -80,7 +80,6 @@ class Login extends React.Component {
         event.preventDefault();
         // alert(this.state.email, this.state.password)
         this.login();
-        
     };
 
         

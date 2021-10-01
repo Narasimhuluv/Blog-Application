@@ -36,7 +36,7 @@ class IndividualArticle extends React.Component{
 
         if(isLoading){
             return (
-                <img className="m-auto mt-52 w-3/12" src="/images/loading.gif" alt="" />
+                <img className="m-auto mt-36 w-2/12" src="/images/loading.gif" alt="" />
             )
         }
         var eachArticle = this.state.allArticles
@@ -46,7 +46,7 @@ class IndividualArticle extends React.Component{
                     <div className="space-y-4 mt-8 mb-40">
                         <article key={this.state.allArticles.slug}>
                             <div>
-                                <img className="shadow-sm" src={"/images/articles_images/"+eachArticle.slug+".png"} alt="" />
+                                <img className="shadow-sm" src={"/images/articles_images/"+eachArticle.slug+".png" || `/images/profile.png`} alt="" />
                                 <div className="ml-10">
                                     <div className="w-1/12 border rounded-full p-2  relative -mt-16 bg-white shadow-md">
                                         <img className="rounded-full w-fullm-auto" src={eachArticle.author.image} alt="" />

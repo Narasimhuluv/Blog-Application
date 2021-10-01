@@ -23,7 +23,6 @@ class App extends React.Component{
 
     componentDidMount(){
         var storagekey = localStorage[localStoragekey]
-        // console.log(storagekey)
         if(storagekey){
             fetch(userVerify, {
                 method : 'GET',
