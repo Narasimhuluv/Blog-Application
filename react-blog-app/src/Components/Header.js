@@ -2,7 +2,7 @@ import React from 'react'
 import {NavLink} from 'react-router-dom'
 
 function Header(props) {
-    console.log(props.user , "header user")
+    // console.log(props.user , "header user")
     return (
         <header>
             {
@@ -13,7 +13,7 @@ function Header(props) {
 }
 
 function AuthenticatedHeader(props){
-    console.log(props.user , "header-props")
+    // console.log(props.user , "header-props")
     return(
         <header className="bg-green-100">
             <div className="container flex justify-between items-center">
@@ -25,14 +25,20 @@ function AuthenticatedHeader(props){
                 </div>
 
 
-                <div className="flex justify-between items-center w-1/12 ">
-                    {/* <NavLink to="/users/login" activeClassName="bg-green-400 ml-8 text-white font-extrabold text-lg py-1 px-4 rounded-md"> */}
-                        <h3 className="font-extrabold mt-3 text-lg">{props.user.username}</h3>
-                    {/* </NavLink> */}
-                    {/* <NavLink to="/users" activeClassName=""> */}
-                        {/* <h3 className="bg-green-400 ml-8 text-white font-extrabold text-center text-lg py-1 px-4 rounded-md">Sign Up</h3> */}
-                        <img className="w-7/12 " src="/images/placeholder.png" alt="" />
-                    {/* </NavLink> */}
+                <div className="flex justify-between items-center  w-3/12">
+                    <NavLink to="/" activeClassName="text-blue-500 font-extrabold text-sm  rounded-md">
+                        <h3 className="font-extrabold mt-3 text-sm">Home</h3>
+                    </NavLink>
+                    <NavLink to="/articles" activeClassName="text-blue-500 font-extrabold text-sm  rounded-md">
+                        <h3 className="font-extrabold mt-3 text-sm">New Article</h3>
+                        {/* <img className="w-7/12 " src="/images/placeholder.png" alt="" /> */}
+                    </NavLink>
+                    <NavLink to="/settings" activeClassName=" text-blue-500 font-extrabold text-sm  rounded-md">
+                        <h3 className="font-extrabold mt-3 text-sm">Settings</h3>
+                    </NavLink>
+                    <NavLink to="/profiles" activeClassName=" text-blue-500 font-extrabold text-sm  rounded-md">
+                        <h3 className="font-extrabold mt-3 text-sm">Profile</h3>
+                    </NavLink>
                 </div>
             </div>
 

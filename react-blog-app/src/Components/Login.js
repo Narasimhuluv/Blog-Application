@@ -39,16 +39,33 @@ class Login extends React.Component {
 
         }).then((res) => {
             if(!res.ok){
-                 throw new Error(res.statusText())
-            }else{
-                return res.json()
+                return res.json().then(({errors}) => {
+                    return Promise.reject(errors)
+                })
             }
-        }).then((userData) => {
-            // console.log(userData , "userDAta")
-            // console.log(this.state.user)
-            this.props.onUpdateUser(userData.user)
-                this.props.history.push("/")
-            
+            return res.json()
+        })
+        .then((userData) => {
+            console.log({userData})
+            this.setState({
+                username: '',
+                email: '',
+                password: '',
+            })
+            this.props.onUpdateUser(userData.user);
+            this.setState({})
+            this.props.history.push("/")
+        })
+        .catch((error) => {
+            this.setState((prevState) => {
+                return {
+                    ...prevState,
+                    errors : {
+                        ...prevState.errors,
+                        email : 'Email or Password is incorrect'
+                    }
+                }
+            });
         })
     }
     

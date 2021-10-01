@@ -45,16 +45,30 @@ class Register extends React.Component {
                 },
             }),
 
-        }).then((res) => res.json()).then((data) => {
-            console.log(data)
+        }).then((res) => {
+            if(!res.ok){
+               return res.json().then(({errors}) => {
+                    this.setState({errors})
+                   return Promise.reject(errors)
+                });
+                // throw new Error('Fetch is not successful')
+            }
+            return res.json()
+        })
+            .then(({user}) => {
+            console.log({user})
+            this.setState({
+                username: '',
+                email: '',
+                password: '',
+            })
             this.props.history.push('/users/login');
             console.log("successfully register")
-        })
+        }).catch((errors) => this.setState({errors}))
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-        // alert(this.state.username)
         this.register()
     };
     
@@ -74,11 +88,11 @@ class Register extends React.Component {
                             <img className="w-4/12 h-1/6  m-auto mb-8" src="/images/placeholder.png" alt="" />
                             <h2 className="text-lg font-semibold ">Register With Your Details</h2>
                             <input type="text" placeholder="Enter Your username" className="border my-2 w-full py-2 px-4 rounded-lg" value={this.state.username} name="username" onChange={(e) => this.handleChange(e)} />
-                            <span className="text-red-500">{username}</span>
+                            <span className="text-red-500 text-sm">{username}</span>
                             <input type="email" placeholder="Enter Your email" className="border my-4 w-full py-2 px-4 rounded-lg" value={this.state.email}  name="email" onChange={(e) => this.handleChange(e)} />
-                            <span className="text-red-500">{email}</span>
+                            <span className="text-red-500 text-sm">{email}</span>
                             <input type="text" placeholder="Enter Your Password" className="border my-4 w-full py-2 px-4 rounded-lg" value={this.state.password} name="password" onChange={(e) => this.handleChange(e)} />
-                            <span className="text-red-500">{password}</span>
+                            <span className="text-red-500 text-sm">{password}</span>
 
                             <div className="w-full flex items-center mt-4">
                                 <input type="Submit" className=" py-1 px-3 rounded-lg bg-black text-white "/>

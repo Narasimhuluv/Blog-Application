@@ -1,4 +1,4 @@
-import { ThreeSixty } from '@mui/icons-material';
+// import { ThreeSixty } from '@mui/icons-material';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {api,ArticleApi} from '../utls/ApiLinks'
@@ -41,11 +41,19 @@ class Home extends React.Component{
         })
     }
 
-    componentDidUpdate(_prevProps, prevState) {
+    componentDidUpdate( prevState) {
         if (prevState.activeIndexPage !== this.state.activeIndexPage || prevState.tagName !== this.state.tagName) {
           this.FetchAllArticles();
         }
     }
+
+    componentWillUnmount( prevState) {
+        // if (prevState.activeIndexPage !== this.state.activeIndexPage || prevState.tagName !== this.state.tagName) {
+        //   this.FetchAllArticles();
+        // }
+        this.FetchAllArticles();
+    }
+
 
     updateCurrentPageIndex = (each) => {
         this.setState({
@@ -72,11 +80,9 @@ class Home extends React.Component{
     }
     render(){
         var displayAllArticles = [];
-        var allArticles = this.state.articles
-        var isLoading = this.state.isLoading
-        var tagsName = this.state.tagName
-        console.log(tagsName)
-        console.log(this.props.isLogged)
+        var allArticles = this.state.articles;
+        var isLoading = this.state.isLoading;
+        var tagsName = this.state.tagName;
 
         // if(!tagsName){
         //     displayAllArticles  = allArticles
@@ -115,7 +121,6 @@ class Home extends React.Component{
 
 function AuthenticatedHome(props){
     var {globalFeed, activeTab, allArticles, handleTag , updateCurrentIndex, personalFeed} = props
-    console.log(personalFeed)
     return(
         <section>
     <div>

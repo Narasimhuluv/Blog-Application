@@ -6,6 +6,10 @@ import IndividualArticle from './IndividualArticle';
 import Login from './Login';
 import Register from './Register';
 import NotFound  from './NotFound';
+import { localStoragekey, userVerify } from '../utls/ApiLinks';
+import NewArticle from './NewArticle';
+import Profile from './Profile';
+import Settings from './Settings';
 
 class App extends React.Component{
     constructor(props){
@@ -16,37 +20,54 @@ class App extends React.Component{
             isVerifying: true,
         }
     }
+
+    componentDidMount(){
+        var storagekey = localStorage[localStoragekey]
+        // console.log(storagekey)
+        if(storagekey){
+            fetch(userVerify, {
+                method : 'GET',
+                headers : {
+                    authorization : `Token ${storagekey}`,
+                }, 
+            }).then(res => {
+                if(res.ok){
+                    return res.json();
+                }
+                return res.json().then(({errors}) => {
+                    return Promise.reject(errors)
+                })
+            }).then((user) => this.onUpdateUser(user))
+            .catch(errors => console.log(errors))
+        }else{
+            this.setState({
+                isVerifying : false,
+            })
+        }
+    }
+
     onUpdateUser = (userData) => {
         this.setState({
             isLogged : true,
             user : userData,
             isVerifying : false
         })
-        localStorage.setItem("token" , userData.token)
+        localStorage.setItem(localStoragekey , userData.token)
     }
     render(){
+        if(this.state.isVerifying){
+            return (
+                <img className="m-auto mt-36 w-2/12" src="/images/loading.gif" alt="" />
+            )
+        }
         return(
             <div>
                 <Header {...this.state}/>
-                {/* <Switch>
-                    <Route exact path="/users" component={Register} />
-
-                    <Route exact path="/users/login">
-                        <Login {...this.state} onUpdateUser={this.onUpdateUser}/>
-                    </Route>
-
-                    <Route exact path="/">
-                        <Home {...this.state}/>
-                    </Route>
-
-                    <Route exact path="/articles/:slug" component={IndividualArticle} />
-
-                    <Route path="*">
-                        <NotFound />
-                    </Route>
-                </Switch> */}
                 {
-                    this.state.isLogged ? <Athenticated  {...this.state} onUpdateUser={this.onUpdateUser}/> : <UnAthenticated {...this.state} onUpdateUser={this.onUpdateUser} />
+                    this.state.isLogged ? 
+                    <Athenticated  {...this.state} onUpdateUser={this.onUpdateUser}/> 
+                    : 
+                    <UnAthenticated {...this.state} onUpdateUser={this.onUpdateUser} />
                 }
             </div>
         )
@@ -77,6 +98,7 @@ function UnAthenticated(props){
 }
 
 function Athenticated(props){
+    // console.log(props.user , "i am consoling user data")
     return(
         <Switch>
             {/* <Route exact path="/users" component={Register} /> */}
@@ -92,7 +114,16 @@ function Athenticated(props){
             </Route>
 
             <Route exact path="/articles/:slug" component={IndividualArticle} />
+            <Route exact path="/articles">
+                <NewArticle />
+            </Route>
 
+            <Route exact path="/profiles">
+                <Profile />
+            </Route>
+            <Route exact path="/settings">
+                <Settings />
+            </Route>
             <Route path="*">
                 <NotFound />
             </Route>
