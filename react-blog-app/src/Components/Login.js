@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import {validations} from '../utls/Validation';
 import {api} from '../utls/ApiLinks';
 import {withRouter} from 'react-router';
-
+import {localStoragekey} from '../utls/ApiLinks'
 
 class Login extends React.Component {
     constructor(){
@@ -25,8 +25,6 @@ class Login extends React.Component {
             credentials : 'same-origin',
             headers : {
                 'Content-Type' : 'application/json',
-                // Authorization:  ,
-                
             },
             redirect : 'follow',
             referrerPolicy : 'no-referrer',
@@ -53,8 +51,8 @@ class Login extends React.Component {
                 password: '',
             })
             this.props.onUpdateUser(userData.user);
-            this.setState({})
             this.props.history.push("/")
+            localStorage.setItem(localStoragekey, userData.user.token)
         })
         .catch((error) => {
             this.setState((prevState) => {
@@ -78,7 +76,6 @@ class Login extends React.Component {
     
     handleSubmit = (event) => {
         event.preventDefault();
-        // alert(this.state.email, this.state.password)
         this.login();
     };
 
@@ -87,7 +84,7 @@ class Login extends React.Component {
         console.log(this.props.isLogged)
         let { email, password } = this.state.errors;
         return (
-            <section className="container ">
+            <section className="container">
                 <div className="login flex justify-between items-center my-10">
                     <div className="w-6/12 ">
                         <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_mragdxra.json"  background="transparent"  speed="1"  style={{width : "100%"}}  loop  autoplay></lottie-player>
@@ -113,6 +110,6 @@ class Login extends React.Component {
             </section>
         )
     }
-}   
+}
 
 export default withRouter(Login) ;

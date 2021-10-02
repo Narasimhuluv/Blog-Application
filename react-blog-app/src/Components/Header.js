@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { withRouter } from 'react-router';
 import {NavLink} from 'react-router-dom'
 
 function Header(props) {
@@ -13,6 +14,7 @@ function Header(props) {
 }
 
 function AuthenticatedHeader(props){
+    // console.log(props)
     // console.log(props.user , "header-props")
     return(
         <header className="bg-green-100">
@@ -33,12 +35,13 @@ function AuthenticatedHeader(props){
                         <h3 className="font-extrabold mt-3 text-sm">New Article</h3>
                         {/* <img className="w-7/12 " src="/images/placeholder.png" alt="" /> */}
                     </NavLink>
-                    <NavLink to="/settings" activeClassName=" text-blue-500 font-extrabold text-sm  rounded-md">
+                    <NavLink to="/user" activeClassName=" text-blue-500 font-extrabold text-sm  rounded-md">
                         <h3 className="font-extrabold mt-3 text-sm">Settings</h3>
                     </NavLink>
                     <NavLink to="/profiles" activeClassName=" text-blue-500 font-extrabold text-sm  rounded-md">
                         <h3 className="font-extrabold mt-3 text-sm">Profile</h3>
                     </NavLink>
+                    {/* <h3  className="font-extrabold mt-3 text-sm">Logout</h3> */}
                 </div>
             </div>
 
@@ -71,4 +74,4 @@ function UnAthenticatedHeader(props){
         </header>
     )
 }
-export default Header
+export default withRouter(Header);

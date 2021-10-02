@@ -21,6 +21,16 @@ class App extends React.Component{
         }
     }
 
+    onUpdateUser = (userData) => {
+        this.setState({
+            isLogged : true,
+            user : userData,
+            isVerifying : false
+        })
+        localStorage.getItem(localStoragekey , userData.token)
+        // console.log(this.state.user, "user Data")
+    }
+
     componentDidMount(){
         var storagekey = localStorage[localStoragekey]
         if(storagekey){
@@ -45,14 +55,7 @@ class App extends React.Component{
         }
     }
 
-    onUpdateUser = (userData) => {
-        this.setState({
-            isLogged : true,
-            user : userData,
-            isVerifying : false
-        })
-        localStorage.setItem(localStoragekey , userData.token)
-    }
+    
     render(){
         if(this.state.isVerifying){
             return (
@@ -97,7 +100,8 @@ function UnAthenticated(props){
 }
 
 function Athenticated(props){
-    // console.log(props.user , "i am consoling user data")
+    // console.log(props , "i am consoling user data")
+    var user = props.user
     return(
         <Switch>
             {/* <Route exact path="/users" component={Register} /> */}
@@ -118,10 +122,10 @@ function Athenticated(props){
             </Route>
 
             <Route exact path="/profiles">
-                <Profile />
+                <Profile user={user}/>
             </Route>
-            <Route exact path="/settings">
-                <Settings />
+            <Route exact path="/user">
+                <Settings {...props}/>
             </Route>
             <Route path="*">
                 <NotFound />

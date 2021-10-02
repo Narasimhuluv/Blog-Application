@@ -18,23 +18,22 @@ class AllTags extends React.Component{
         })
     }
     render(){
-        var {articles, activeTab} = this.props
+        var {articles, activeTab, tagName} = this.props
         var tags = this.state.allTags
         // filterTags 
         var filterTags = tags.filter((elem, index) => {
             return tags.indexOf(elem) === index
         })
         return(
-            <div className="w-4/12">
-                <h2 className="m-4 text-xl font-extrabold">Popular Tags</h2>
-                <div className="p-1">
+            <div className="w-4/12 ">
+                <h2 className="m-4  text-xl font-extrabold">Popular Tags</h2>
+                <div className="p-1 h-2/6 py-2 rounded-lg overflow-y-scroll Tags">
                     <div className=" flex justify-between flex-wrap">
                         {
                             filterTags.map((each) => (
-                                each === "" ? null : <button key={each} className="border py-1 px-4 m-1 rounded-lg shadow-md text-sm"   onClick={() => this.props.handleTag(each)}>{each}</button>
+                                each === "" ? "" : <button key={each} className={tagName===each ? "border py-1 px-4 m-1 rounded-lg bg-yellow-400 text-white shadow-md text-sm" : "border py-1 px-4 m-1 rounded-lg shadow-md text-sm"}   onClick={() => this.props.handleTag(each)}>{each}</button>
                             ))
                         }
-                        {/* className="border py-1 px-4 m-1 rounded-lg shadow-md"  */}
                     </div>
                 </div>
             </div>

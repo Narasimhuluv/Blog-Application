@@ -29,7 +29,7 @@ class IndividualArticle extends React.Component{
             })
         }).catch(err => console.log(err));
     }
-        render(){
+    render(){
         console.log(this.props , "props")
         console.log(this.state.allArticles)
         var isLoading = this.state.isLoading

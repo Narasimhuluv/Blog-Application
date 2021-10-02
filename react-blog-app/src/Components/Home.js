@@ -41,25 +41,18 @@ class Home extends React.Component{
         })
     }
 
-    componentDidUpdate( prevState) {
+    componentDidUpdate(_prevprops, prevState) {
         if (prevState.activeIndexPage !== this.state.activeIndexPage || prevState.tagName !== this.state.tagName) {
           this.FetchAllArticles();
         }
     }
-
-    componentWillUnmount( prevState) {
-        // if (prevState.activeIndexPage !== this.state.activeIndexPage || prevState.tagName !== this.state.tagName) {
-        //   this.FetchAllArticles();
-        // }
-        this.FetchAllArticles();
-    }
-
 
     updateCurrentPageIndex = (each) => {
         this.setState({
             activeIndexPage : each,
         }, this.FetchAllArticles)
     }
+
     handleTagArticle = async (each) => {
        await this.setState({
             tagName : each,
@@ -69,13 +62,15 @@ class Home extends React.Component{
 
     globalFeed = () => {
         this.setState({
-            tagName : ""
+            tagName : null,
+            activeTab : null
         })
     }
 
     personalFeed = () => {
         this.setState({
-            tagName : ""
+            tagName : null,
+            actvieTab : null
         })
     }
     render(){
