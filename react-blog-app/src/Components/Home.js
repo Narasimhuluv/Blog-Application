@@ -41,7 +41,7 @@ class Home extends React.Component{
         })
     }
 
-    componentDidUpdate(_prevprops, prevState) {
+    componentDidUpdate(_prevProps, prevState) {
         if (prevState.activeIndexPage !== this.state.activeIndexPage || prevState.tagName !== this.state.tagName) {
           this.FetchAllArticles();
         }
@@ -57,47 +57,41 @@ class Home extends React.Component{
        await this.setState({
             tagName : each,
             activeTab : each,
-        }, this.FetchAllArticles())
+        }, this.FetchAllArticles)
     }
+    // handleTagArticle =  ({target}) => {
+    //     console.log(target ,"clicked")
+    //     var {value} = target.dataset;
+    //      this.setState({
+    //          tagsName : value
+    //      }, this.FetchAllArticles())
+    //  }
 
     globalFeed = () => {
         this.setState({
-            tagName : null,
-            activeTab : null
-        })
+            tagName : "",
+            activeTab : ""
+        },this.FetchAllArticles)
+        
     }
 
     personalFeed = () => {
         this.setState({
-            tagName : null,
-            actvieTab : null
-        })
+            tagName : "",
+            actvieTab : "",
+        },this.FetchAllArticles)
     }
     render(){
         var displayAllArticles = [];
         var allArticles = this.state.articles;
         var isLoading = this.state.isLoading;
         var tagsName = this.state.tagName;
-
-        // if(!tagsName){
-        //     displayAllArticles  = allArticles
-        // }else{
-        //     allArticles.map((each) => {
-        //         each.tagList.map((eachTag) => {
-        //             if(eachTag === tagsName){
-        //                 return displayAllArticles.push(each)
-        //             }
-        //         })
-        //     })
-        // }
-        // console.log(displayAllArticles)
         
         if(isLoading){
             return (
                 <img className="m-auto mt-36 w-2/12" src="/images/loading.gif" alt="" />
             )
         }
-        // console.log(this.props.user , "hello")
         var activeTab = this.state.activeTab
         return(
             <>

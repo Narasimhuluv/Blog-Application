@@ -3,5 +3,4 @@ var ArticleApi = api + `articles`;
 var tagsUrl = api + `tags`;
 var localStoragekey = "api_user";
 var userVerify = api + `/user`;
-var userProfile = api + `/:username`
-export {api,ArticleApi,tagsUrl, localStoragekey, userVerify, userProfile};
+export {api,ArticleApi,tagsUrl, localStoragekey, userVerify};

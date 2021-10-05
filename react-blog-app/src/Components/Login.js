@@ -94,12 +94,18 @@ class Login extends React.Component {
                             {/* <lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_hdiNFs.json"  background="transparent" style={{width : "60%",margin: "auto"}}  speed="1"  loop  autoplay></lottie-player> */}
                             <img className="w-4/12 h-1/6  m-auto mb-8" src="/images/placeholder.png" alt="" />
                             <h2 className="text-lg font-semibold ">Login With Your Details</h2>
-                            <input type="email" placeholder="Enter Your Eamil" className="border my-2 w-full py-2 px-4 rounded-lg" name="email"  value={this.state.email} onChange={(e) => this.handleChange(e)} />
-                            <span className="text-red-400">{email}</span>
-                            <input type="password" placeholder="Enter Your Password" className="border my-4 w-full py-2 px-4 rounded-lg" name="password" value={this.state.password} onChange={(e) => this.handleChange(e)} />
-                            <span className="text-red-400">{password}</span>
+                            <div className="my-4 ">
+                                <label className="ml-2" htmlFor="">Login <span className="text-sm text-red-500">*</span></label>
+                                <input type="email" placeholder="Enter Your Eamil" className="border my-2 w-full py-2 px-4 mt-2 rounded-lg" name="email"  value={this.state.email} onChange={(e) => this.handleChange(e)} />
+                                <span className="text-red-400">{email}</span>
+                            </div>
+                            <div className="my-4 ">
+                                <label className="ml-2" htmlFor="">Password <span className="text-sm text-red-500">*</span></label>
+                                <input type="password" placeholder="Enter Your Password" className="border w-full py-2 px-4 mt-2 rounded-lg" name="password" value={this.state.password} onChange={(e) => this.handleChange(e)} />
+                                <span className="text-red-400">{password}</span>
+                            </div>
                             <div className="w-full flex items-center mt-4">
-                                <input type="Submit"  className=" py-1 px-3 rounded-lg bg-black text-white "/>
+                                <input type="Submit"  className=" py-1 px-3 cursor-pointer rounded-lg bg-black text-white "/>
                                 <NavLink to="/register">
                                     <h6 className="w-full ml-1 text-center text-pink-700">Register ?</h6>
                                 </NavLink>

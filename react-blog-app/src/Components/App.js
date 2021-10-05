@@ -10,11 +10,14 @@ import { localStoragekey, userVerify } from '../utls/ApiLinks';
 import NewArticle from './NewArticle';
 import Profile from './Profile';
 import Settings from './Settings';
+import UpdateArticle from './UpdateArticle';
+import OtherProfile from './OtherProfile';
 
 class App extends React.Component{
     constructor(props){
         super(props);
         this.state={
+            UpdateArticle : null,
             isLogged : false,
             user : null,
             isVerifying: true,
@@ -29,6 +32,16 @@ class App extends React.Component{
         })
         localStorage.getItem(localStoragekey , userData.token)
         // console.log(this.state.user, "user Data")
+    }
+    onUpdateArticle = (updated) => {
+        this.setState({
+            UpdateArticle : updated,
+        })
+        console.log(this.state.UpdateArticle, "update 1")
+    }
+
+    logOut = () => {
+        localStorage.clear()
     }
 
     componentDidMount(){
@@ -54,6 +67,7 @@ class App extends React.Component{
             })
         }
     }
+    
 
     
     render(){
@@ -64,10 +78,10 @@ class App extends React.Component{
         }
         return(
             <div>
-                <Header {...this.state}/>
+                <Header {...this.state} logout={this.logOut}/>
                 {
                     this.state.isLogged ? 
-                    <Athenticated  {...this.state} onUpdateUser={this.onUpdateUser}/> 
+                    <Athenticated  {...this.state} onUpdateUser={this.onUpdateUser} onUpdateArticle={this.onUpdateArticle}  /> 
                     : 
                     <UnAthenticated {...this.state} onUpdateUser={this.onUpdateUser} />
                 }
@@ -116,16 +130,26 @@ function Athenticated(props){
                 <Home {...props}/>
             </Route>
 
-            <Route exact path="/articles/:slug" component={IndividualArticle} />
+            <Route exact path="/articles/:slug" >
+                <IndividualArticle {...props}/>
+            </Route>
+
             <Route exact path="/articles">
                 <NewArticle />
             </Route>
 
             <Route exact path="/profiles">
-                <Profile user={user}/>
+                <Profile user={user}  {...props}/>
             </Route>
             <Route exact path="/user">
-                <Settings {...props}/>
+                <Settings {...props} />
+            </Route>
+
+            <Route exact path="/articles/:slug/update">
+                <UpdateArticle {...props}/>
+            </Route>
+            <Route exact path="/profiles/:username">
+                <OtherProfile {...props}/>
             </Route>
             <Route path="*">
                 <NotFound />

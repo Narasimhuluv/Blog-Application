@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import {NavLink} from 'react-router-dom'
 
 function Header(props) {
-    // console.log(props.user , "header user")
+    // console.log(props.logout , "logout")
     return (
         <header>
             {
@@ -14,8 +14,8 @@ function Header(props) {
 }
 
 function AuthenticatedHeader(props){
-    // console.log(props)
-    // console.log(props.user , "header-props")
+    var {logout} = props
+    console.log(logout, "logout")
     return(
         <header className="bg-green-100">
             <div className="container flex justify-between items-center">
@@ -27,7 +27,7 @@ function AuthenticatedHeader(props){
                 </div>
 
 
-                <div className="flex justify-between items-center  w-3/12">
+                <div className="flex justify-between items-center  w-4/12">
                     <NavLink to="/" activeClassName="text-blue-500 font-extrabold text-sm  rounded-md">
                         <h3 className="font-extrabold mt-3 text-sm">Home</h3>
                     </NavLink>
@@ -41,7 +41,9 @@ function AuthenticatedHeader(props){
                     <NavLink to="/profiles" activeClassName=" text-blue-500 font-extrabold text-sm  rounded-md">
                         <h3 className="font-extrabold mt-3 text-sm">Profile</h3>
                     </NavLink>
-                    {/* <h3  className="font-extrabold mt-3 text-sm">Logout</h3> */}
+                    <a href="/">
+                        <h3 onClick={logout}  className="font-extrabold mt-3 cursor-pointer text-sm">Logout</h3>
+                    </a>
                 </div>
             </div>
 
