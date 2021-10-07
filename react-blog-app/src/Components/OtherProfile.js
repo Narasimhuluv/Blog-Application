@@ -20,7 +20,7 @@ class OtherProfile extends React.Component{
     }
 
     FetchOtherProfile = () => {
-        var profile = this.props.match.params.username
+        var profile = this.props.match.params.username;
         fetch(api + `/profiles/${profile}`)
         .then((res) => res.json())
         .then((profileData) => {
@@ -32,8 +32,8 @@ class OtherProfile extends React.Component{
     }
 
     FetchOtherProfileArticle = () => {
-        var profile = this.props.match.params.slug
-        fetch(ArticleApi + `?author=${profile}`)
+        var profile = this.props.match.params.username;
+        fetch(ArticleApi + `/?author=${profile}`)
         .then((res) => res.json())
         .then((profileArticleData) => {
              this.setState({
@@ -52,7 +52,6 @@ class OtherProfile extends React.Component{
             )
         }
         var {otherprofile} = this.state
-        // console.log(otherprofile)
         return(
             <>
                 <div className="container">
@@ -91,20 +90,20 @@ class OtherProfile extends React.Component{
 }
 function EachArticle(props){
     var {each} = props;
-    console.log(each.slug)
     return(
         <>
             <article className="mb-14">
                 <span className="text-gray-600">{moment(each.createdAt).format('L')}</span>
                 <h2 className="text-2xl text-gray-700 font-extrabold">{each.title}</h2>
                 {/* <img src={ } alt="" /> */}
-                <img src={`/images/articles_images/${each.slug}.png` || `/images/bg.png`} alt="" />
+                <img src={`/images/articles_images/${each.slug}.png`} alt="" />
                 {/* <img className="rounded-md mt-4" src={`/images/bg.png`} alt="" /> */}
                 <p className="mt-4 text-md font-bold text-gray-600">{(each.description).slice(0,68)} . . . . </p>
-                <p className="mt-2 text-sm font-bold text-gray-500">{(each.body).slice(0,150)} . . . . </p>
+                {/* <p className="mt-2 text-sm font-bold text-gray-500">{(each.body).slice(0,68)} . . . . </p> */}
                 <NavLink to={`/articles/${each.slug}`}>
                     <p className="mt-4 text-blue-500 font-bold">Read More . . .</p>
                 </NavLink>
+                <hr className="mt-4"/>
 
             </article>
 

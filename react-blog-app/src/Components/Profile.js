@@ -9,6 +9,7 @@ class Profile extends React.Component {
     constructor(props){
         super(props);
         this.state={
+            activeTab : "active",
             eachuserData : [],
             CountNumber : null,
             isLoading : true,
@@ -21,12 +22,22 @@ class Profile extends React.Component {
     }
     FetchUserArticles = () => {
         fetch(ArticleApi+ `?author=${this.props.user.user.username}`)
-        .then((res) => res.json())
+        .then((res) => {
+            if(!res.ok){
+                throw new Error('Can not fetch data for specific user!')
+            }else{
+                return res.json();
+            }
+        })
         .then((data) => {
             this.setState({
                 eachuserData : data.articles,
                 CountNumber : data.articlesCount,
                 isLoading : false,
+            })
+        }).catch((err) => {
+            this.setState({
+                err : 'Not able to fetch articles'
             })
         })
     }
@@ -57,6 +68,17 @@ class Profile extends React.Component {
         this.DeleteArticle(slug);
     }
 
+    FavoritedArticle = () => {
+        this.setState({
+            activeTab : "favorited"
+        })
+    }
+    myArticles = () => {
+        this.setState({
+            activeTab : "active"
+        })
+    }
+
     render(){
         var isLoading = this.state.isLoading
         if(isLoading){
@@ -66,8 +88,7 @@ class Profile extends React.Component {
         }
         var user = this.props.user.user;
         var eachuserData = this.state.eachuserData;
-        console.log(eachuserData)
-        console.log(this.state.CountNumber)
+        console.log(this.state.activeTab)
         return (
             <div className="container">
                 <article className="rounded-md overflow-hidden  my-3">
@@ -101,6 +122,11 @@ class Profile extends React.Component {
                         </div>
                    </NavLink>
                 </article>
+
+                <div>
+                    <button className={this.state.activeTab === "active" ? `border-b-2 border-green-500 px-1 py-1` : `border-b-2 px-1 py-1`} onClick={this.myArticles}>MyArticles</button>
+                    <button className={this.state.activeTab === "favorited" ? `border-b-2 border-green-500 px-1 py-1 ml-4` : `border-b-2 px-1 py-1 ml-4`} onClick={this.FavoritedArticle}>Favorited Articles</button>
+                </div>
                 
                 
                 <div className="mt-10 flex flex-wrap">

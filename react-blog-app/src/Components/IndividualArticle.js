@@ -19,6 +19,10 @@ class IndividualArticle extends React.Component{
         this.FetchEachArticle();
         this.FetchTenArticles();
     }
+    componentWillUnmount(){
+        this.FetchEachArticle();
+        this.FetchEachArticle();
+    }
     FetchEachArticle = () => {
         var {slug} = this.props.match.params;
         // console.log(slug)
@@ -162,8 +166,8 @@ function AuthenticatedIndividualArticle(props){
                                     </div>
 
                                     <div className="flex ml-4">
-                                        <p><i className={props.favorite == 'favorite' ? `far fa-heart text-red-500` : `far fa-heart`} onClick={handleFavorite}></i></p>
-                                        <p><i className={props.favorite == 'unfavorite' ? `far fa-heart text-black ml-2` : `far fa-heart ml-2`} onClick={handleUnvorite}></i></p>
+                                        <p><i className={props.favorite == 'favorite' ? `fas fa-heart text-red-500` : `fas fa-heart`} onClick={handleFavorite}></i></p>
+                                        <p><i className={props.favorite == 'unfavorite' ? `fas fa-heart text-black ml-2` : `fas fa-heart ml-2`} onClick={handleUnvorite}></i></p>
                                     </div>
                                 </div>
     
@@ -192,7 +196,7 @@ function AuthenticatedIndividualArticle(props){
                             <img src={"/images/articles_images/"+each.slug+".png"} alt="" />
                             <div className="px-4">
                                 <h2 className="font-bold">{each.title}</h2>
-                                <p className="text-sm">{(each.description).slice(0,190)} . . . .</p>
+                                <p className="text-sm">{(each.description).slice(0,120)} . . . .</p>
                                 <NavLink to={`/articles/${each.slug}`}>
                                     <button className="py-1 rounded-lg px-4 my-6 bg-black text-white">Read More</button>
                                 </NavLink>
@@ -215,13 +219,14 @@ function AuthenticatedIndividualArticle(props){
 
 function UnAuthenticatedIndividualArticle(props){
     var {eachArticle} = props;
+    console.log(props)
     return(
         <>
             <div className="container">
                 <div className="space-y-4 mt-8 mb-40">
                     <article key={eachArticle.slug}>
                         <div>
-                            <img className="shadow-sm" src={"/images/articles_images/"+eachArticle.slug+".png" || `/images/profile.png`} alt="" />
+                            <img className="shadow-sm" src={"/images/articles_images/"+eachArticle.slug+".png"} alt="" />
                             <div className="ml-10">
                                 
                                 <div className="w-1/12 border rounded-full p-2  relative -mt-16 bg-white shadow-md">
@@ -230,24 +235,35 @@ function UnAuthenticatedIndividualArticle(props){
                                 <div className="mt-4">
                                     <h3 className="text-2xl font-extrabold">{eachArticle.author.username}</h3>
                                     <h4>{eachArticle.author.bio}</h4>        
-                                </div>
-                                
+                                </div>   
                             </div>
 
                             <div className="mt-8">
                                 <div className="flex items-center">
                                     <h2 className="text-2xl font-extrabold">{eachArticle.title}</h2>
-                                    {/* <p><i className="far fa-edit text-black ml-5 cursor-pointer text-xl"></i></p> */}
                                 </div>
                                 <h3>{eachArticle.body}</h3>
                                 <h3 className="mt-4 font-extrabold text-xl">Description</h3>
                                 <p>{eachArticle.description}</p>
                             </div>
                         </div>
+
                     </article>
+
+                    <div className=" w-6/12 m-auto mt-20 text-center">
+                        <NavLink to="/users/login">
+                            <p className="text-green-400">Sign In</p>
+                        </NavLink>
+                        <p className="mx-3">Or</p>
+                        <NavLink to="/users">
+                            <p className="text-green-400">Sign Up</p>
+                        </NavLink>
+                        <p className="ml-2">To add comments on this article.</p>
+                    </div>
+                    
                 </div>
              </div>
         </>
     )
 }
-export default withRouter(IndividualArticle); 
+export default withRouter(IndividualArticle);  

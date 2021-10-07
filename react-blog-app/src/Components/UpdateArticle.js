@@ -58,7 +58,7 @@ class UpdateArticle extends React.Component{
                         title : this.state.title,
                         description : this.state.description,
                         body : this.state.body,
-                        tagList : this.state.tagList
+                        tagList : this.state.tagList.split(",").map(tag => tag.trim())
                     }
                 })
             }).then((res) => res.json())
@@ -70,11 +70,11 @@ class UpdateArticle extends React.Component{
         }
     }
     
-    // Validates email address of course.
-    validEmail = (email) => {
-        var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
-        return re.test(email)
-    }
+    // // Validates email address of course.
+    // validEmail = (email) => {
+    //     var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+    //     return re.test(email)
+    // }
 
     handleChange = ({target}) => {
         var {name, value} = target;

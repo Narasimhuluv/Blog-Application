@@ -39,17 +39,18 @@ class NewArticle extends React.Component{
                         title : this.state.title,
                         description : this.state.description,
                         body : this.state.body,
-                        tagList : this.state.tagList 
+                        tagList : this.state.tagList.split(",").map(tag => tag.trim())
                     },
                 }),
-            }).then((res) => res.json())
-                // if(!res.ok){
-                //     return res.json.then(({errors}) => {
-                //         return Promise.reject(errors)
-                //     })
-                // }
-                // return res.json();
-            // })
+            })
+            // .then((res) => res.json())
+            .then((res) => {
+                if(!res.ok){
+                    throw new Error ('Can not create new article!')
+                }else{
+                    return res.json();
+                }
+            })
             .then((newArticleData) => {
                 console.log(newArticleData)
                 this.props.history.push('/')
@@ -58,8 +59,9 @@ class NewArticle extends React.Component{
                     description : "",
                     body : "",
                     tagList : "",
-                })
-                
+                })  
+            }).catch((errors) => {
+                this.setState({errors})
             })
        }
     }
