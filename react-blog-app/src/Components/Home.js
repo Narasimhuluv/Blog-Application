@@ -122,7 +122,7 @@ function AuthenticatedHome(props){
                     <h2 className="ml-20 text-lg font-extrabold mb-2" onClick={globalFeed}>Global Feed</h2>
                 </NavLink>
 
-                <NavLink to="/" activeClassName="">
+                <NavLink to="/" activeClassName="text-yello-700">
                     <h2 className="ml-5 text-lg font-extrabold mb-2" onClick={personalFeed}>Personal Feed</h2>
                 </NavLink>
            </div>

@@ -19,17 +19,17 @@
 }
 .Tags::-webkit-scrollbar{
     width: 5px;
-	background-color: #f77440;
+	background-color: #f77440b6;
 }
 .Tags::-webkit-scrollbar-thumb{
     background-color: #f0db20f5;
 	border-radius: 10px;
 	background-image: -webkit-linear-gradient(90deg,
-                                            #f77440 25%,
+                                            #836e66 25%,
 											  transparent 25%,
 											  transparent 50%,
 											  rgb(255, 255, 255) 50%,
-											  #f77440 75%,
+											  #c2b6b1 75%,
 											  transparent 75%,
 											  transparent)
 }

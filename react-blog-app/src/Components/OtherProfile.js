@@ -32,7 +32,7 @@ class OtherProfile extends React.Component{
     }
 
     FetchOtherProfileArticle = () => {
-        var profile = this.props.match.params.username
+        var profile = this.props.match.params.slug
         fetch(ArticleApi + `?author=${profile}`)
         .then((res) => res.json())
         .then((profileArticleData) => {
@@ -52,20 +52,20 @@ class OtherProfile extends React.Component{
             )
         }
         var {otherprofile} = this.state
-        console.log(otherprofile)
+        // console.log(otherprofile)
         return(
             <>
                 <div className="container">
-                    <section className="flex items-center m-7">
+                    <section className="flex  m-7">
                         <div>
                             <div className="typing-demo">
                                 <h2 className="text-3xl font-extrabold uppercase">{otherprofile.username}</h2>
                             </div>
                             <p className="text-sm">{otherprofile.bio}</p>
                         </div>
-                        {/* <div>
-                            <h3>Following {otherprofile.following}</h3>
-                        </div> */}
+                        <div className="ml-8">
+                            <h3 className="font-extrabold text-blue-500 cursor-pointer">Follow {otherprofile.following}</h3>
+                        </div>
                     </section>
 
                     <section className=" flex">

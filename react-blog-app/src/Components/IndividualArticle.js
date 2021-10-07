@@ -1,8 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import {ArticleApi} from '../utls/ApiLinks';
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import {api,ArticleApi} from '../utls/ApiLinks';
 import { NavLink } from 'react-router-dom';
+import {localStoragekey} from  '../utls/ApiLinks'
 
 
 class IndividualArticle extends React.Component{
@@ -12,6 +12,7 @@ class IndividualArticle extends React.Component{
             EachArticle : [],
             AllArticles : [],
             isLoading : true,
+            favorite : "",
         }
     }
     componentDidMount(){
@@ -35,10 +36,79 @@ class IndividualArticle extends React.Component{
         fetch(ArticleApi).then((res)=> res.json()).then((articlesData) => {
             this.setState({
                 AllArticles : articlesData.articles,
-                // isLoading : false,
+                isLoading : false,
             })
         })
     }
+
+    AddFavorite = () => {
+        var {slug} = this.props.match.params
+        var storagekey = localStorage[localStoragekey];
+        if(storagekey){
+            fetch(ArticleApi + `/${slug}/favorite`, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization : `Token ${storagekey}`
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify({
+                }) // body data type must match "Content-Type" header
+            }).then((res) => res.json())
+            .then((favorite) => {
+                this.props.onUpdateArticle(favorite)
+                this.props.history.push(`/articles/${slug}`)
+            })
+        }
+    }
+
+    removeFavorite = () => {
+        var {slug} = this.props.match.params
+        var storagekey = localStorage[localStoragekey];
+        if(storagekey){
+            fetch(ArticleApi + `/${slug}/favorite`, {
+                method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization : `Token ${storagekey}`
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify({
+                }) // body data type must match "Content-Type" header
+            }).then((res) => res.json())
+            .then((favorite) => {
+                this.props.onUpdateArticle(favorite)
+                this.props.history.push(`/articles/${slug}`)
+            })
+        }
+    }
+
+
+
+    handleFavorite = () => {
+        this.AddFavorite();
+        this.setState({
+            favorite : "favorite",
+        })
+    }
+
+    handleUnvorite = () => {
+        this.removeFavorite();
+        this.setState({
+            favorite : "unfavorite"
+        })
+    }
+
     render(){
         var isLoading = this.state.isLoading;
         if(isLoading){
@@ -48,10 +118,20 @@ class IndividualArticle extends React.Component{
         }
         var eachArticle = this.state.EachArticle
         var AllArticles = this.state.AllArticles
+        console.log(eachArticle)
         return(
             <div>
                 {
-                    this.props.isLogged ? <AuthenticatedIndividualArticle {...this.props} eachArticle={eachArticle} TenArticles={AllArticles} /> : <UnAuthenticatedIndividualArticle {...this.props} eachArticle={eachArticle} />
+                    this.props.isLogged ? <AuthenticatedIndividualArticle 
+                    {...this.state} 
+                    eachArticle={eachArticle} 
+                    TenArticles={AllArticles} 
+                    handleFavorite={this.handleFavorite} 
+                    handleUnvorite={this.handleUnvorite}/> 
+                    : 
+                    <UnAuthenticatedIndividualArticle 
+                    {...this.state} 
+                    eachArticle={eachArticle} />
                 }
             </div>
         )
@@ -59,8 +139,8 @@ class IndividualArticle extends React.Component{
 }
 
 function AuthenticatedIndividualArticle(props){
-    var {eachArticle, TenArticles} = props
-    // console.log(props.TenArticles, "TenArticles")
+    var {eachArticle, TenArticles, handleFavorite, handleUnvorite} = props
+    console.log(props.favorite)
     var numbers = [1,2,3,4,5,6,7,8,9,10];
     var randomNumber = numbers[Math.floor(Math.random() * numbers.length)]
     return(
@@ -75,12 +155,18 @@ function AuthenticatedIndividualArticle(props){
                                 <div className="w-1/12 border rounded-full p-2  relative -mt-16 bg-white shadow-md">
                                     <img className="rounded-full w-fullm-auto" src={eachArticle.author.image} alt="" />
                                 </div>
-                                <div className="mt-4">
-                                    <h3 className="text-2xl font-extrabold">{eachArticle.author.username}</h3>
-                                    <h4 >{eachArticle.author.bio}</h4>
-                                    
+                                <div className="mt-4 w-2/12 flex items-center">
+                                    <div>
+                                        <h3 className="text-2xl font-extrabold">{eachArticle.author.username}</h3>
+                                        <h4 >{eachArticle.author.bio}</h4>
+                                    </div>
+
+                                    <div className="flex ml-4">
+                                        <p><i className={props.favorite == 'favorite' ? `far fa-heart text-red-500` : `far fa-heart`} onClick={handleFavorite}></i></p>
+                                        <p><i className={props.favorite == 'unfavorite' ? `far fa-heart text-black ml-2` : `far fa-heart ml-2`} onClick={handleUnvorite}></i></p>
+                                    </div>
                                 </div>
-                                
+    
                             </div>
 
                             <div className="mt-8">
@@ -119,7 +205,7 @@ function AuthenticatedIndividualArticle(props){
                                 </NavLink>
                             </div>
                         </article>
-                    )).slice(randomNumber,15)
+                    ))
                  }
 
              </div>
@@ -143,8 +229,7 @@ function UnAuthenticatedIndividualArticle(props){
                                 </div>
                                 <div className="mt-4">
                                     <h3 className="text-2xl font-extrabold">{eachArticle.author.username}</h3>
-                                    <h4>{eachArticle.author.bio}</h4>
-                                    
+                                    <h4>{eachArticle.author.bio}</h4>        
                                 </div>
                                 
                             </div>
