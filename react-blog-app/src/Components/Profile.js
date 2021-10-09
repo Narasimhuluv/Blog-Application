@@ -19,6 +19,7 @@ class Profile extends React.Component {
 
     componentDidMount(){
         this.FetchUserArticles();
+        this.FavoritedArticle();
     }
     FetchUserArticles = () => {
         fetch(ArticleApi+ `?author=${this.props.user.user.username}`)
@@ -60,15 +61,25 @@ class Profile extends React.Component {
                 referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             }).then((res) => res.json())
               .then((updatedArticle) =>  {
+                this.props.onUpdateArticle(updatedArticle)
                 this.props.history.push('/')
             })
         }
+    }
+
+
+    FavoritedArticleData = (slug) => {
+        fetch(ArticleApi, `/${slug}/favorite`)
+        .then((res) => res.json())
+        .then((favoriteData) => {
+            console.log(favoriteData)
+        })
     }
     deleteArticle = (slug) => {
         this.DeleteArticle(slug);
     }
 
-    FavoritedArticle = () => {
+    FavoritedArticle = (slug) => {
         this.setState({
             activeTab : "favorited"
         })

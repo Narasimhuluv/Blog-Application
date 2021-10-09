@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import {api, ArticleApi} from '../utls/ApiLinks';
+import {api, ArticleApi, localStoragekey} from '../utls/ApiLinks';
 import moment from 'moment';
 import { NavLink } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ class OtherProfile extends React.Component{
             otherprofile : [],
             ProfileArticles : [],
             isLoading : true,
+            followorunfollow : "Follow",
         }
     }
 
@@ -39,8 +40,76 @@ class OtherProfile extends React.Component{
              this.setState({
                 ProfileArticles : profileArticleData.articles
              })
-             console.log(this.state.ProfileArticles)
         })
+    }
+
+    FollowUser = () => {
+        var profile = this.props.match.params.username
+        var storagekey = localStorage[localStoragekey];
+        if(storagekey){
+            fetch(api + `profiles/${profile}/follow`, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                'Content-Type': 'application/json',
+                authorization : `Token ${storagekey}`
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer',
+            })
+            .then((res) => res.json())
+            .then((updateUser) => {
+                this.props.onUpdateUser(updateUser.profile)
+                this.props.onUpdateProfile(updateUser.profile);
+                this.props.history.push(`/profiles/${profile}`);
+                this.setState({
+                    otherprofile : updateUser.profile
+                })
+            })
+        }
+    }
+
+    UnFollowUser = () => {
+        var profile = this.props.match.params.username
+        var storagekey = localStorage[localStoragekey];
+        if(storagekey){
+            fetch(api + `profiles/${profile}/follow`, {
+                method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                'Content-Type': 'application/json',
+                authorization : `Token ${storagekey}`
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            })
+            .then((res) => res.json())
+            .then((updateUser) => {
+                console.log(updateUser)
+                this.props.onUpdateProfile(updateUser);
+                this.props.history.push(`/profiles/${profile}`)
+                this.setState({
+                    otherprofile : updateUser.profile
+                })
+            })
+        }
+    }
+    handleFollow = () => {
+        this.FollowUser();
+        console.log("Follow")
+        // this.setState({
+        //     followorunfollow : "Un Follow"
+        // })
+    }
+
+    handleUnFollow = () => {
+        this.UnFollowUser();
     }
 
     render(){
@@ -52,6 +121,7 @@ class OtherProfile extends React.Component{
             )
         }
         var {otherprofile} = this.state
+        console.log(otherprofile)
         return(
             <>
                 <div className="container">
@@ -63,7 +133,14 @@ class OtherProfile extends React.Component{
                             <p className="text-sm">{otherprofile.bio}</p>
                         </div>
                         <div className="ml-8">
-                            <h3 className="font-extrabold text-blue-500 cursor-pointer">Follow {otherprofile.following}</h3>
+                             {/* <h3 className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleFollow}>{this.state.followorunfollow}</h3> */}
+                             {
+                                 otherprofile.following === false ? <p className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleFollow}>Follow</p>: <p className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleUnFollow}>Un Follow</p>
+                             }
+                            
+                            {/* {
+                                otherprofile.following === true ? <h3 className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleFollow}>Un Follow</h3> : <h3 className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleFollow}>Follow</h3>
+                            } */}
                         </div>
                     </section>
 
@@ -90,6 +167,7 @@ class OtherProfile extends React.Component{
 }
 function EachArticle(props){
     var {each} = props;
+    console.log(each, "each articles")
     return(
         <>
             <article className="mb-14">
@@ -99,7 +177,7 @@ function EachArticle(props){
                 <img src={`/images/articles_images/${each.slug}.png`} alt="" />
                 {/* <img className="rounded-md mt-4" src={`/images/bg.png`} alt="" /> */}
                 <p className="mt-4 text-md font-bold text-gray-600">{(each.description).slice(0,68)} . . . . </p>
-                {/* <p className="mt-2 text-sm font-bold text-gray-500">{(each.body).slice(0,68)} . . . . </p> */}
+                <p className="mt-2 text-sm font-bold text-gray-500">{(each.body).slice(0,100)} . . . . </p>
                 <NavLink to={`/articles/${each.slug}`}>
                     <p className="mt-4 text-blue-500 font-bold">Read More . . .</p>
                 </NavLink>

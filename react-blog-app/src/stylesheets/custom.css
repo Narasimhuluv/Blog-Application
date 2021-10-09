@@ -47,6 +47,10 @@
     font-family: monospace;
     font-size: 2em;
   }
+
+.comment::-webkit-scrollbar{
+    width: 0;
+}
   
   @keyframes typing {
     from {

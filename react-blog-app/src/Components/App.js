@@ -12,6 +12,7 @@ import Profile from './Profile';
 import Settings from './Settings';
 import UpdateArticle from './UpdateArticle';
 import OtherProfile from './OtherProfile';
+import Comments from './Comments';
 
 class App extends React.Component{
     constructor(props){
@@ -21,6 +22,8 @@ class App extends React.Component{
             isLogged : false,
             user : null,
             isVerifying: true,
+            UpdateComment : null,
+            UpdateProfile : null,
         }
     }
 
@@ -38,6 +41,19 @@ class App extends React.Component{
             UpdateArticle : updated,
         })
         console.log(this.state.UpdateArticle, "update 1")
+    }
+
+    onUpdatedComment = (comment) => {
+        this.setState({
+            UpdateComment : comment
+        })
+        console.log(this.state.UpdateComment, "update comment")
+    }
+    onUpdateProfile = (profile) => {
+        this.setState({
+            UpdateProfile : profile
+        })
+        console.log(this.state.UpdateProfile, "updated profile")
     }
 
     logOut = () => {
@@ -81,7 +97,7 @@ class App extends React.Component{
                 <Header {...this.state} logout={this.logOut}/>
                 {
                     this.state.isLogged ? 
-                    <Athenticated  {...this.state} onUpdateUser={this.onUpdateUser} onUpdateArticle={this.onUpdateArticle}  /> 
+                    <Athenticated  {...this.state} onUpdateUser={this.onUpdateUser} onUpdateArticle={this.onUpdateArticle} onUpdatedComment = {this.onUpdatedComment} onUpdateProfile={this.onUpdateProfile}  /> 
                     : 
                     <UnAthenticated {...this.state} onUpdateUser={this.onUpdateUser} />
                 }
@@ -131,7 +147,8 @@ function Athenticated(props){
             </Route>
 
             <Route exact path="/articles/:slug" >
-                <IndividualArticle {...props}/>
+                <IndividualArticle {...props} />
+                {/* <Comments {...props}/> */}
             </Route>
 
             <Route exact path="/articles">

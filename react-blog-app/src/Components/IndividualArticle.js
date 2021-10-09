@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 import {api,ArticleApi} from '../utls/ApiLinks';
 import { NavLink } from 'react-router-dom';
 import {localStoragekey} from  '../utls/ApiLinks'
+import Comments from './Comments';
 
 
 class IndividualArticle extends React.Component{
@@ -13,11 +14,13 @@ class IndividualArticle extends React.Component{
             AllArticles : [],
             isLoading : true,
             favorite : "",
+            allcomments : [],
         }
     }
     componentDidMount(){
         this.FetchEachArticle();
         this.FetchTenArticles();
+        this.fetchGetComments();
     }
     componentWillUnmount(){
         this.FetchEachArticle();
@@ -97,6 +100,17 @@ class IndividualArticle extends React.Component{
         }
     }
 
+    fetchGetComments = () => {
+        var {slug} = this.props.match.params
+        fetch(ArticleApi + `/${slug}/comments`)
+        .then((res) => res.json())
+        .then((all) => {
+            this.setState({
+                allcomments : all.comments
+            })
+            // console.log(this.state.allcomments)
+        })
+    }
 
 
     handleFavorite = () => {
@@ -113,6 +127,7 @@ class IndividualArticle extends React.Component{
         })
     }
 
+
     render(){
         var isLoading = this.state.isLoading;
         if(isLoading){
@@ -122,16 +137,20 @@ class IndividualArticle extends React.Component{
         }
         var eachArticle = this.state.EachArticle
         var AllArticles = this.state.AllArticles
-        console.log(eachArticle)
         return(
             <div>
                 {
                     this.props.isLogged ? <AuthenticatedIndividualArticle 
-                    {...this.state} 
+                    {...this.state}
                     eachArticle={eachArticle} 
                     TenArticles={AllArticles} 
+                    handleComment={this.handleComment}
+                    handleSubmit={this.handleSubmit}
                     handleFavorite={this.handleFavorite} 
-                    handleUnvorite={this.handleUnvorite}/> 
+                    handleUnvorite={this.handleUnvorite}
+                    onUpdateArticle={this.props.onUpdateArticle}
+                    slug = {this.props.match.params}
+                    /> 
                     : 
                     <UnAuthenticatedIndividualArticle 
                     {...this.state} 
@@ -143,10 +162,11 @@ class IndividualArticle extends React.Component{
 }
 
 function AuthenticatedIndividualArticle(props){
-    var {eachArticle, TenArticles, handleFavorite, handleUnvorite} = props
-    console.log(props.favorite)
+    // var onUpdateArticle = props.onUpdateArticle
+    var {eachArticle, TenArticles, handleFavorite, handleUnvorite, onUpdateArticle} = props
     var numbers = [1,2,3,4,5,6,7,8,9,10];
     var randomNumber = numbers[Math.floor(Math.random() * numbers.length)]
+    console.log(eachArticle)
     return(
         <>
             <div className="container">
@@ -166,8 +186,8 @@ function AuthenticatedIndividualArticle(props){
                                     </div>
 
                                     <div className="flex ml-4">
-                                        <p><i className={props.favorite == 'favorite' ? `fas fa-heart text-red-500` : `fas fa-heart`} onClick={handleFavorite}></i></p>
-                                        <p><i className={props.favorite == 'unfavorite' ? `fas fa-heart text-black ml-2` : `fas fa-heart ml-2`} onClick={handleUnvorite}></i></p>
+                                        <p><i className={props.favorite === 'favorite' ? `fas fa-heart text-red-500` : `fas fa-heart`} onClick={handleFavorite}></i></p>
+                                        <p><i className={props.favorite === 'unfavorite' ? `fas fa-heart text-black ml-2` : `fas fa-heart ml-2`} onClick={handleUnvorite}></i></p>
                                     </div>
                                 </div>
     
@@ -186,10 +206,14 @@ function AuthenticatedIndividualArticle(props){
                         </div>
                     </article>
                 </div>
-             </div>
+            </div>
+
+                <div>
+                    <Comments {...props} onUpdateArticle={props.onUpdateArticle} slug={props.slug}/>
+                </div>
 
 
-             <div className="container flex flex-wrap justify-between">
+            {/* <div className="container flex flex-wrap justify-between">
                  {
                     TenArticles.map((each) => (
                         <article key={each.slug} className="border my-3 w-5/12 space-y-4 m-5 rounded-xl shadow-md relative article">
@@ -209,10 +233,10 @@ function AuthenticatedIndividualArticle(props){
                                 </NavLink>
                             </div>
                         </article>
-                    ))
+                    )).slice(randomNumber,15)
                  }
 
-             </div>
+             </div> */}
         </>
     )
 }

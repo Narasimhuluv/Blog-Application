@@ -21,7 +21,7 @@ class NewArticle extends React.Component{
 
 
     PostArticles = () => {
-       var storagekey = localStorage[localStoragekey]
+       var storagekey = localStorage[localStoragekey];
        if(storagekey){
             fetch(ArticleApi, {
                 method : 'POST',
