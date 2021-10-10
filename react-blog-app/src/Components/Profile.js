@@ -14,6 +14,7 @@ class Profile extends React.Component {
             CountNumber : null,
             isLoading : true,
             favortedArticles : [],
+            favortedArticlesCount : ""
         };
     }
 
@@ -70,7 +71,7 @@ class Profile extends React.Component {
     FavoritedArticleData = (username) => {
         var storagekey = localStorage[localStoragekey];
         if(storagekey){
-            fetch(ArticleApi + `/?favorited=${this.props.match.params.username}`,{
+            fetch(ArticleApi + `/?favorited=${username}`,{
                 method : 'GET',
                 headers : {
                     authorization : `Token ${storagekey}`,
@@ -84,10 +85,12 @@ class Profile extends React.Component {
                 }
               })
             .then((favoriteArticleData) => {
-                console.log(favoriteArticleData.articles)
+                console.log(favoriteArticleData.articlesCount)
                 this.setState({
                     isLoading : false,
-                    favortedArticles : favoriteArticleData.articles
+                    favortedArticles : favoriteArticleData.articles,
+                    favortedArticlesCount : favoriteArticleData.articlesCount,
+                    activeTab : "favorited",
                 })
             })
         }
@@ -104,8 +107,8 @@ class Profile extends React.Component {
         this.DeleteArticle(slug);
     }
 
-    FavoritedArticle = (slug) => {
-        this.FavoritedArticleData(slug);
+    FavoritedArticle = (username) => {
+        this.FavoritedArticleData(username);
         this.setState({
             activeTab : "favorited"
         })
@@ -136,7 +139,6 @@ class Profile extends React.Component {
                     <img src="/images/profile.png" className="w-full" />
     
                     <div className="flex justify-center -mt-12">
-                        {/* <img src="https://i.imgur.com/8Km9tLL.jpg" className="border rounded-md border-white -mt-3 w-28" />	*/}
                         <img src={user.image} className="border rounded-md border-white  -mt-3 w-28" />		
                     </div>
                     
@@ -152,8 +154,10 @@ class Profile extends React.Component {
                         </div>
 
                         <div className="w-11/12 border-l-2  text-center">
-                            <h5>Followers</h5>
-                            <h4>{this.state.CountNumber}</h4>
+                            <h5>Social Media</h5>
+                            <div>
+                                
+                            </div>
                         </div>
                     </div>
     
@@ -166,7 +170,7 @@ class Profile extends React.Component {
 
                 <div>
                     <button className={this.state.activeTab === "active" ? `border-b-2 border-green-500 px-1 py-1` : `border-b-2 px-1 py-1`} onClick={this.myArticles}>MyArticles</button>
-                    <button className={this.state.activeTab === "favorited" ? `border-b-2 border-green-500 px-1 py-1 ml-4` : `border-b-2 px-1 py-1 ml-4`} onClick={this.FavoritedArticle}>Favorited Articles</button>
+                    <button className={this.state.activeTab === "favorited" ? `border-b-2 border-green-500 px-1 py-1 ml-4` : `border-b-2 px-1 py-1 ml-4`} onClick={() => this.FavoritedArticle(user.username)}>Favorited Articles</button>
                 </div>
                 
                 
@@ -208,36 +212,28 @@ class Profile extends React.Component {
 
                    {
                        this.state.activeTab === "favorited" ? (
-                        // fav.map((each) => (
+                        fav.map((each) => (
                                 <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm font-light text-gray-600 dark:text-gray-400">Date</span>
-                                    <div className="flex">
-                                            {/* <NavLink to={`/articles/${each.slug}/update`}> */}
-                                                    <p><i className="far fa-edit ml-5 cursor-pointer text-xl text-yellow-700"></i></p>
-                                            {/* </NavLink> */}
-
-                                                {/* <DeleteSweepIcon className="ml-3 cursor-pointer text-xl text-red-500" onClick={() => this.deleteArticle(each.slug)} /> */}
-                                                {/* <p><i className="far fa-delete ml-5 cursor-pointer text-xl text-yellow-700"></i></p> */}
-                                    </div>
+                                        <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.createdAt).format('L')}</span>
                                     </div>
                             
                                     <div className="mt-2">
-                                        <p className="text-2xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline"></p>
-                                        <p className="mt-2 text-gray-600 dark:text-gray-300"> . . . . </p>
+                                        <p className="text-2xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline">{(each.title).slice(0,40)} . . . . .</p>
+                                        <p className="mt-2 text-gray-600 dark:text-gray-300"> {(each.description).slice(0,68)}. . . . </p>
                                     </div>
                                     
                                     <div className="flex items-center justify-between mt-4">
-                                        {/* <NavLink to={`/articles/${each.slug}`} > */}
+                                        <NavLink to={`/articles/${each.slug}`} >
                                             <p  className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Read more</p>
-                                        {/* </NavLink> */}
+                                        </NavLink>
                                         <div className="flex items-center">
-                                            <img className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src="" alt="avatar" />
-                                            <p className="font-bold text-gray-700 cursor-pointer dark:text-gray-200"></p>
+                                            <img className="hidden object-cover w-5 h-5 mx-4 rounded-full sm:block" src={each.author.image} alt="avatar" />
+                                            <p className="font-bold text-gray-700 cursor-pointer text-sm dark:text-gray-200">{each.author.username}</p>
                                         </div>
                                     </div> 
                                 </article>
-                    //    ))
+                       ))
                        ) : ""
                    }
                 </div>
