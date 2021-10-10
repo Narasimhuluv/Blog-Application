@@ -58,14 +58,15 @@ class UpdateArticle extends React.Component{
                         title : this.state.title,
                         description : this.state.description,
                         body : this.state.body,
-                        tagList : this.state.tagList.split(",").map(tag => tag.trim())
+                        // tagList : this.state.tagList.split(",").map(tag => tag.trim())
+                        tagList : this.state.tagList
                     }
                 })
             }).then((res) => res.json())
               .then((updatedArticle) =>  {
                 console.log(updatedArticle, "updated article")
                 this.props.onUpdateArticle(updatedArticle)
-                this.props.history.push('/profiles')
+                this.props.history.push(`/articles/${slug}`)
             })
         }
     }

@@ -51,6 +51,10 @@
 .comment::-webkit-scrollbar{
     width: 0;
 }
+
+.image_size{
+    width: 40px;
+}
   
   @keyframes typing {
     from {

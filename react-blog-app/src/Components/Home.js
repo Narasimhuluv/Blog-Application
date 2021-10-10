@@ -6,6 +6,7 @@ import AllArticles from './AllArticles';
 import AllTags from './AllTags';
 import Hero from './Hero';
 import Pagination from './Pagination';
+import {localStoragekey} from '../utls/ApiLinks'
 
 
 class Home extends React.Component{
@@ -14,6 +15,7 @@ class Home extends React.Component{
         this.state={
             isLoading : true,
             articles : [],
+            feeddata : [],
             tagName : "",
             // filters 
             articlesPerPage : 10,
@@ -21,6 +23,7 @@ class Home extends React.Component{
             activeIndexPage : 1,
             // activeTab
             activeTab : "",
+            countLikes : 0,
         }
     }
     componentDidMount(){
@@ -44,20 +47,21 @@ class Home extends React.Component{
     componentDidUpdate(_prevProps, prevState) {
         if (prevState.activeIndexPage !== this.state.activeIndexPage || prevState.tagName !== this.state.tagName) {
           this.FetchAllArticles();
+          this.Feed();
         }
     }
 
     updateCurrentPageIndex = (each) => {
         this.setState({
             activeIndexPage : each,
-        }, this.FetchAllArticles)
+        }, this.FetchAllArticles, this.Feed)
     }
 
     handleTagArticle = async (each) => {
        await this.setState({
             tagName : each,
             activeTab : each,
-        }, this.FetchAllArticles)
+        }, this.FetchAllArticles, this.Feed)
     }
     // handleTagArticle =  ({target}) => {
     //     console.log(target ,"clicked")
@@ -67,25 +71,66 @@ class Home extends React.Component{
     //      }, this.FetchAllArticles())
     //  }
 
+    Feed = () => {
+        // /api/articles/feed
+        var limit = this.state.articlesPerPage
+        var offset = (this.state.activeIndexPage - 1) * 10
+        var storagekey = localStorage[localStoragekey]
+        var tag = this.state.tagName
+        if(storagekey){
+                fetch(ArticleApi+ `/feed?/limit=${limit}&skip=${offset}`+ (tag && `&tag=${tag}`), {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache', 
+                credentials: 'same-origin',
+                headers: {
+                  'Content-Type': 'application/json',
+                  authorization : `Token ${storagekey}`
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer', 
+                body: JSON.stringify()
+            }).then((res) => res.json())
+            .then((feedData) => {
+                console.log(feedData.articles)
+                this.setState({
+                    feeddata : feedData.articles,
+                    activeTab : "feed"
+                })
+            })
+        }
+          
+    }
+
     globalFeed = () => {
         this.setState({
             tagName : "",
             activeTab : ""
-        },this.FetchAllArticles)
+        },this.FetchAllArticles , this.Feed)
         
     }
 
     personalFeed = () => {
+        this.Feed();
         this.setState({
             tagName : "",
-            actvieTab : "",
-        },this.FetchAllArticles)
+            actvieTab : "feed",
+        },this.FetchAllArticles, this.Feed)
     }
+
+    handleAddCount = () => {
+        this.setState({
+            countLikes : this.state.countLikes + 1
+        })
+        console.log("counter clicked")
+    }
+    
     render(){
         var displayAllArticles = [];
         var allArticles = this.state.articles;
         var isLoading = this.state.isLoading;
         var tagsName = this.state.tagName;
+        var feeddata = this.state.feeddata
         
         if(isLoading){
             return (
@@ -97,8 +142,8 @@ class Home extends React.Component{
             <>
                 {
                     this.props.isLogged ? 
-                    <AuthenticatedHome {...this.state} globalFeed={this.globalFeed} activeTab={activeTab} personalFeed={this.personalFeed}
-                    allArticles={allArticles} handleTag={this.handleTagArticle} updateCurrentIndex={this.updateCurrentPageIndex}/> 
+                    <AuthenticatedHome {...this.state} globalFeed={this.globalFeed} activeTab={activeTab} personalFeed={this.personalFeed} feeddata={feeddata}
+                    allArticles={allArticles} handleTag={this.handleTagArticle} updateCurrentIndex={this.updateCurrentPageIndex} handleAddCount={this.handleAddCount}/> 
                     :
                     <UnAthenticatedHome {...this.state} globalFeed={this.globalFeed} activeTab={activeTab} 
                     allArticles={allArticles} handleTag={this.handleTagArticle} updateCurrentIndex={this.updateCurrentPageIndex}/>
@@ -109,7 +154,8 @@ class Home extends React.Component{
 }
 
 function AuthenticatedHome(props){
-    var {globalFeed, activeTab, allArticles, handleTag , updateCurrentIndex, personalFeed} = props
+    var {globalFeed, activeTab, allArticles, handleTag , updateCurrentIndex, personalFeed , handleAddCount, feeddata} = props
+    console.log(activeTab)
     return(
         <section>
     <div>
@@ -142,14 +188,42 @@ function AuthenticatedHome(props){
         <div className="w-full flex mt-10">
             <div className="w-8/12 flex justify-center flex-wrap ">
                 {
-                    allArticles.map((each) => (
-                        <AllArticles {...props} each={each}/>
-                    ))
+                    activeTab === "" ? (
+                        allArticles.map((each) => (
+                            <AllArticles {...props} each={each} handleAddCount={handleAddCount}/>
+                        ))
+                    ) : ""
+                }
+
+                {
+                    activeTab === 'feed' ? (
+                        feeddata.map((each) => (
+                            <article key={each.slug} className="border my-3 w-5/12 space-y-4 m-5 h-72 rounded-xl shadow-md relative overflow-hidden article">
+                                <img src={"/images/articles_images/"+each.slug+".png"} alt="" />
+                                <div className="px-4">
+                                    <h2 className="font-bold">{each.title}</h2>
+                                    <p className="text-sm">{(each.description).slice(0,120)} . . . .</p>
+                                    <NavLink to={`/articles/${each.slug}`}>
+                                        <button className="py-1 rounded-lg px-4 my-6 bg-black text-white">Read More</button>
+                                    </NavLink>
+                                    <NavLink to={`/profiles/${each.author.username}`}>
+                                        <div className="w-3/12 flex justify-center items-center absolute right-3 bottom-2">
+                                            <small className="font-bold">{each.author.username}</small>
+                                            <img  src={each.author.image} alt="" className="w-3/12 rounded-full ml-4" />
+                                        </div>
+                                    </NavLink>
+                                </div>
+                            </article>
+                        ))
+                    ) : ""
                 }
             </div>
             <AllTags {...props} handleTag={handleTag}/>
         </div>  
         {/* ArticlesData End */}
+
+
+        
 
     </div>
         {/* Pagination  */}

@@ -25,9 +25,10 @@ class OtherProfile extends React.Component{
         fetch(api + `/profiles/${profile}`)
         .then((res) => res.json())
         .then((profileData) => {
+            console.log(profileData.profile, "hello thing ")
             this.setState({
                 isLoading : false,
-                otherprofile : profileData.profile
+                otherprofile : profileData.profile,
             })
         })
     }
@@ -37,39 +38,46 @@ class OtherProfile extends React.Component{
         fetch(ArticleApi + `/?author=${profile}`)
         .then((res) => res.json())
         .then((profileArticleData) => {
+                console.log(profileArticleData, "narender")
              this.setState({
                 ProfileArticles : profileArticleData.articles
              })
         })
     }
 
-    FollowUser = () => {
-        var profile = this.props.match.params.username
-        var storagekey = localStorage[localStoragekey];
-        if(storagekey){
-            fetch(api + `profiles/${profile}/follow`, {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                'Content-Type': 'application/json',
-                authorization : `Token ${storagekey}`
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer',
-            })
-            .then((res) => res.json())
-            .then((updateUser) => {
-                this.props.onUpdateUser(updateUser.profile)
-                this.props.onUpdateProfile(updateUser.profile);
-                this.props.history.push(`/profiles/${profile}`);
-                this.setState({
-                    otherprofile : updateUser.profile
-                })
-            })
+    FollowUser = (username) => {
+        let storageKey = localStorage[localStoragekey];
+    fetch(api + `profiles/${username}/follow`, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Token ${storageKey}`,
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then(({ errors }) => {
+            return Promise.reject(errors);
+          });
+        } else {
+          console.log(res.json());
+          // this.props.history.push(`/`);
         }
+      }).then((data) => {
+          this.setState({
+            followorunfollow : 'follow',
+          })
+      })
+      .catch((errors) => {
+        console.log(errors);
+        this.setState({ errors });
+      });
+
     }
 
     UnFollowUser = () => {
@@ -89,31 +97,37 @@ class OtherProfile extends React.Component{
                 redirect: 'follow', // manual, *follow, error
                 referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             })
-            .then((res) => res.json())
-            .then((updateUser) => {
-                console.log(updateUser)
-                this.props.onUpdateProfile(updateUser);
-                this.props.history.push(`/profiles/${profile}`)
-                this.setState({
-                    otherprofile : updateUser.profile
-                })
+            .then((res) => {
+                if (!res.ok) {
+                  return res.json().then(({ errors }) => {
+                    return Promise.reject(errors);
+                  });
+                } else {
+                  console.log(res.json());
+                  // this.props.history.push(`/`);
+                }
+              }).then((data) => {
             })
+              .catch((errors) => {
+                console.log(errors);
+                this.setState({ errors });
+              });
         }
     }
-    handleFollow = () => {
-        this.FollowUser();
+    handleFollow = (username) => {
+        this.FollowUser(username);
         console.log("Follow")
-        // this.setState({
-        //     followorunfollow : "Un Follow"
-        // })
     }
 
-    handleUnFollow = () => {
-        this.UnFollowUser();
+    handleUnFollow = (username) => {
+        this.UnFollowUser(username);
+        console.log('Un Follow')
     }
 
     render(){
         var isLoading = this.state.isLoading;
+        console.log(this.props)
+        var otherprofile = this.state.otherprofile
         var profileArticles = this.state.ProfileArticles
         if(isLoading){
             return (
@@ -121,7 +135,6 @@ class OtherProfile extends React.Component{
             )
         }
         var {otherprofile} = this.state
-        console.log(otherprofile)
         return(
             <>
                 <div className="container">
@@ -133,14 +146,10 @@ class OtherProfile extends React.Component{
                             <p className="text-sm">{otherprofile.bio}</p>
                         </div>
                         <div className="ml-8">
-                             {/* <h3 className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleFollow}>{this.state.followorunfollow}</h3> */}
-                             {
-                                 otherprofile.following === false ? <p className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleFollow}>Follow</p>: <p className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleUnFollow}>Un Follow</p>
-                             }
-                            
-                            {/* {
-                                otherprofile.following === true ? <h3 className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleFollow}>Un Follow</h3> : <h3 className="font-extrabold text-blue-500 cursor-pointer" onClick={this.handleFollow}>Follow</h3>
-                            } */}
+                            {/* <p onClick={() =>this.handleFollow(otherprofile.username)}>Follow</p> */}
+                            {
+                                otherprofile.following === false   ? <p onClick={() =>this.handleFollow(otherprofile.username)} className="cursor-pointer text-green-400">Follow</p> : <p onClick={() =>this.handleUnFollow(otherprofile.username)} className="cursor-pointer text-green-400">UnFollow</p>
+                            }
                         </div>
                     </section>
 
@@ -167,7 +176,6 @@ class OtherProfile extends React.Component{
 }
 function EachArticle(props){
     var {each} = props;
-    console.log(each, "each articles")
     return(
         <>
             <article className="mb-14">
@@ -177,7 +185,7 @@ function EachArticle(props){
                 <img src={`/images/articles_images/${each.slug}.png`} alt="" />
                 {/* <img className="rounded-md mt-4" src={`/images/bg.png`} alt="" /> */}
                 <p className="mt-4 text-md font-bold text-gray-600">{(each.description).slice(0,68)} . . . . </p>
-                <p className="mt-2 text-sm font-bold text-gray-500">{(each.body).slice(0,100)} . . . . </p>
+                <p className="mt-2 text-sm font-bold text-gray-500">{(each.body)} . . . . </p>
                 <NavLink to={`/articles/${each.slug}`}>
                     <p className="mt-4 text-blue-500 font-bold">Read More . . .</p>
                 </NavLink>

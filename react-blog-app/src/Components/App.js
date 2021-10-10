@@ -49,6 +49,7 @@ class App extends React.Component{
         })
         console.log(this.state.UpdateComment, "update comment")
     }
+    
     onUpdateProfile = (profile) => {
         this.setState({
             UpdateProfile : profile

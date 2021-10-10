@@ -13,13 +13,12 @@ class Profile extends React.Component {
             eachuserData : [],
             CountNumber : null,
             isLoading : true,
+            favortedArticles : [],
         };
     }
 
-
     componentDidMount(){
         this.FetchUserArticles();
-        this.FavoritedArticle();
     }
     FetchUserArticles = () => {
         fetch(ArticleApi+ `?author=${this.props.user.user.username}`)
@@ -35,6 +34,7 @@ class Profile extends React.Component {
                 eachuserData : data.articles,
                 CountNumber : data.articlesCount,
                 isLoading : false,
+                activeTab : "active",
             })
         }).catch((err) => {
             this.setState({
@@ -63,31 +63,59 @@ class Profile extends React.Component {
               .then((updatedArticle) =>  {
                 this.props.onUpdateArticle(updatedArticle)
                 this.props.history.push('/')
+                this.FetchUserArticles()
+            })
+        }
+    }
+    FavoritedArticleData = (username) => {
+        var storagekey = localStorage[localStoragekey];
+        if(storagekey){
+            fetch(ArticleApi + `/?favorited=${this.props.match.params.username}`,{
+                method : 'GET',
+                headers : {
+                    authorization : `Token ${storagekey}`,
+                },
+            })
+            .then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.statusText);
+                } else {
+                  return res.json();
+                }
+              })
+            .then((favoriteArticleData) => {
+                console.log(favoriteArticleData.articles)
+                this.setState({
+                    isLoading : false,
+                    favortedArticles : favoriteArticleData.articles
+                })
             })
         }
     }
 
-
-    FavoritedArticleData = (slug) => {
-        fetch(ArticleApi, `/${slug}/favorite`)
-        .then((res) => res.json())
-        .then((favoriteData) => {
-            console.log(favoriteData)
-        })
+    updateCurrentPageIndex = (each) => {
+        this.setState({
+            activeIndexPage : each,
+        }, this.FetchAllArticles)
     }
+
+
     deleteArticle = (slug) => {
         this.DeleteArticle(slug);
     }
 
     FavoritedArticle = (slug) => {
+        this.FavoritedArticleData(slug);
         this.setState({
             activeTab : "favorited"
         })
     }
+
     myArticles = () => {
         this.setState({
             activeTab : "active"
         })
+        console.log("My Articles")
     }
 
     render(){
@@ -100,6 +128,8 @@ class Profile extends React.Component {
         var user = this.props.user.user;
         var eachuserData = this.state.eachuserData;
         console.log(this.state.activeTab)
+        var fav = this.state.favortedArticles
+        console.log(this.props , "profile props")
         return (
             <div className="container">
                 <article className="rounded-md overflow-hidden  my-3">
@@ -142,7 +172,8 @@ class Profile extends React.Component {
                 
                 <div className="mt-10 flex flex-wrap">
                    {
-                       eachuserData.map((each) => (
+                       this.state.activeTab === "active" ? (
+                        eachuserData.map((each) => (
                             <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top">
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.updatedAt).format('L')}</span>
@@ -172,6 +203,42 @@ class Profile extends React.Component {
                                 </div> 
                             </article>
                        ))
+                       ) : ""
+                   }
+
+                   {
+                       this.state.activeTab === "favorited" ? (
+                        // fav.map((each) => (
+                                <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm font-light text-gray-600 dark:text-gray-400">Date</span>
+                                    <div className="flex">
+                                            {/* <NavLink to={`/articles/${each.slug}/update`}> */}
+                                                    <p><i className="far fa-edit ml-5 cursor-pointer text-xl text-yellow-700"></i></p>
+                                            {/* </NavLink> */}
+
+                                                {/* <DeleteSweepIcon className="ml-3 cursor-pointer text-xl text-red-500" onClick={() => this.deleteArticle(each.slug)} /> */}
+                                                {/* <p><i className="far fa-delete ml-5 cursor-pointer text-xl text-yellow-700"></i></p> */}
+                                    </div>
+                                    </div>
+                            
+                                    <div className="mt-2">
+                                        <p className="text-2xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline"></p>
+                                        <p className="mt-2 text-gray-600 dark:text-gray-300"> . . . . </p>
+                                    </div>
+                                    
+                                    <div className="flex items-center justify-between mt-4">
+                                        {/* <NavLink to={`/articles/${each.slug}`} > */}
+                                            <p  className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Read more</p>
+                                        {/* </NavLink> */}
+                                        <div className="flex items-center">
+                                            <img className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src="" alt="avatar" />
+                                            <p className="font-bold text-gray-700 cursor-pointer dark:text-gray-200"></p>
+                                        </div>
+                                    </div> 
+                                </article>
+                    //    ))
+                       ) : ""
                    }
                 </div>
             </div>

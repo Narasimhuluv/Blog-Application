@@ -3,9 +3,11 @@ import {NavLink} from 'react-router-dom';
 
 function AllArticles(props) {
     var each = props.each
+    var {handleAddCount} = props
+    // console.log(handleAddCount)
     return (
         <>
-            <article key={each.slug} className="border my-3 w-5/12 space-y-4 m-5 rounded-xl h-72 shadow-md relative overflow-hidden article">
+            <article key={each.slug} className="border my-3 w-5/12 space-y-4 m-5 rounded-xl shadow-md h-72 relative overflow-hidden article">
                 <img src={"/images/articles_images/"+each.slug+".png"} alt="" />
                 <div className="px-4">
                     <h2 className="font-bold">{each.title}</h2>
@@ -20,6 +22,12 @@ function AllArticles(props) {
                         </div>
                     </NavLink>
                 </div>
+
+
+                {/* <div className="absolute top-0 right-3">
+                    <p onClick={handleAddCount} className="text-lg cursor-pointer"><i className="fab fa-gratipay"></i></p>
+                    <p  >{props.countLikes >= 1 ? props.countLikes : null }</p>
+                </div> */}
             </article>
         </>
     )
