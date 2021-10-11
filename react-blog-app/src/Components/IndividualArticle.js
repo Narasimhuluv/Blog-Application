@@ -19,7 +19,6 @@ class IndividualArticle extends React.Component{
     }
     componentDidMount(){
         this.FetchEachArticle();
-        this.FetchTenArticles();
         this.fetchGetComments();
     }
     // componentDidUpdate(_prevProps, prevState){
@@ -41,14 +40,6 @@ class IndividualArticle extends React.Component{
         }).catch(err => console.log(err));
     }
 
-    FetchTenArticles = () => {
-        fetch(ArticleApi).then((res)=> res.json()).then((articlesData) => {
-            this.setState({
-                AllArticles : articlesData.articles,
-                isLoading : false,
-            })
-        })
-    }
 
     AddFavorite = (slug) => {
         // var {slug} = this.props.match.params
@@ -234,32 +225,6 @@ function AuthenticatedIndividualArticle(props){
                 <div>
                     <Comments {...props} eachArticle={eachArticle}  onUpdateArticle={props.onUpdateArticle} slug={props.slug} fetchGetComments={fetchGetComments} />
                 </div>
-
-
-            {/* <div className="container flex flex-wrap justify-between">
-                 {
-                    TenArticles.map((each) => (
-                        <article key={each.slug} className="border my-3 w-5/12 space-y-4 m-5 rounded-xl shadow-md relative article">
-                            <img src={"/images/articles_images/"+each.slug+".png"} alt="" />
-                            <div className="px-4">
-                                <h2 className="font-bold">{each.title}</h2>
-                                <p className="text-sm">{(each.description).slice(0,120)} . . . .</p>
-                                <NavLink to={`/articles/${each.slug}`}>
-                                    <button className="py-1 rounded-lg px-4 my-6 bg-black text-white">Read More</button>
-                                </NavLink>
-
-                                <NavLink to={`/profiles/${each.author.username}`}>
-                                    <div className="w-3/12 flex justify-center items-center absolute right-2 bottom-2">
-                                        <small className="font-bold">{each.author.username}</small>
-                                        <img src={each.author.image} alt="" className="w-3/12 rounded-full ml-4" />
-                                    </div>
-                                </NavLink>
-                            </div>
-                        </article>
-                    )).slice(randomNumber,15)
-                 }
-
-             </div> */}
         </>
     )
 }

@@ -16,8 +16,8 @@ function AuthenticatedHeader(props){
     var {logout} = props
     // console.log(logout, "logout")
     return(
-        <header className="bg-green-100">
-            <div className="container flex justify-between items-center">
+        <header className="bg-green-100 header">
+            <div className="container flex justify-between items-center column">
                 <div className="heading text-4xl font-extrabold text-pink-600 flex items-center">
                     <lottie-player className="lottie" src="https://assets10.lottiefiles.com/private_files/lf30_dezgszkb.json"  background="transparent"  speed="1" style={{width : "100px", height: "100px", display : "block"}}    loop  autoplay></lottie-player>
                     <NavLink to="/">
@@ -26,7 +26,7 @@ function AuthenticatedHeader(props){
                 </div>
 
 
-                <div className="flex justify-between items-center  w-4/12">
+                <div className="flex justify-between items-center  w-4/12 header_nav half">
                     <NavLink to="/" activeClassName="text-blue-500 font-extrabold text-sm  rounded-md">
                         <h3 className="font-extrabold mt-3 text-sm">Home</h3>
                     </NavLink>

@@ -209,7 +209,7 @@ function UserArticle(props){
     var {each} = props
     return(
         <>
-            <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top" data-aos="zoom-in">
+            <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top user_article" data-aos="zoom-in">
                 <div className="flex items-center justify-between">
                     <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.createdAt).format('L')}</span>
                     <div className="flex">

@@ -77,12 +77,12 @@ class Register extends React.Component {
         let {username , password, email } = this.state.errors;
         return (
             <section className="container ">
-                <div className="login flex justify-between items-center my-10">
-                    <div className="w-6/12 ">
+                <div className="login flex justify-between items-center my-10 column">
+                    <div className="w-6/12 m-auto half">
                         <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_q5pk6p1k.json"  background="transparent"  speed="1"  style={{width : "85%",}}  loop  autoplay></lottie-player>
                         {/* <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_mragdxra.json"  background="transparent"  speed="1"  style={{width : "100%",}}  loop  autoplay></lottie-player> */}
                     </div>
-                    <div className="w-6/12 m-auto">
+                    <div className="w-6/12 m-auto half">
                         <form action="" onSubmit={this.handleSubmit} className="border w-8/12 m-auto shadow-md p-6 py-20 rounded-xl">
                             {/* <lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_hdiNFs.json"  background="transparent" style={{width : "60%",margin: "auto"}}  speed="1"  loop  autoplay></lottie-player> */}
                             <img className="w-4/12 h-1/6  m-auto mb-8" src="/images/placeholder.png" alt="" />

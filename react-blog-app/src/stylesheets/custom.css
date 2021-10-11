@@ -83,8 +83,64 @@
     .article{
         width: 100%;
         padding: 1rem 0;
+        height: 25vh;
+    }
+    .user_article{
+        width: 100%;
+        height: 20vh;
     }
     .pagination{
         width: 100%;
+    }
+    .column{
+        flex-direction: column;
+    }
+    .half{
+        width: 90%;
+        /* border: 1px solid grey; */
+        margin: auto;
+
+    }
+}
+
+@media screen and (max-width : 568px) {
+    html{
+        font-size: 12px;
+    }
+    .container{
+        width: 90%;
+    }
+    .hero{
+        margin-top: 2rem;
+    }
+    .global_eachTag{
+        margin-top: 3rem;
+    }
+    .article{
+        width: 100%;
+        padding: 1rem 0;
+        height: 25vh;
+    }
+    .user_article{
+        width: 100%;
+        height: 20vh;
+    }
+    .pagination{
+        width: 100%;
+    }
+    .column{
+        flex-direction: column;
+    }
+    .half{
+        width: 90%;
+        /* border: 1px solid grey; */
+        margin: auto;
+
+    }
+    .header_nav{
+        margin-left: 4rem;
+    }
+    .header{
+        padding: 1rem 0;
     }
 }

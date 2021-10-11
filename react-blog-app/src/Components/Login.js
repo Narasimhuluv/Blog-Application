@@ -44,7 +44,6 @@ class Login extends React.Component {
             return res.json()
         })
         .then((userData) => {
-            console.log({userData})
             this.setState({
                 username: '',
                 email: '',
@@ -81,15 +80,14 @@ class Login extends React.Component {
 
         
     render(){
-        console.log(this.props.isLogged)
         let { email, password } = this.state.errors;
         return (
             <section className="container">
-                <div className="login flex justify-between items-center my-10">
-                    <div className="w-6/12 ">
+                <div className="login flex justify-between items-center my-10 column">
+                    <div className="w-6/12 half">
                         <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_mragdxra.json"  background="transparent"  speed="1"  style={{width : "100%"}}  loop  autoplay></lottie-player>
                     </div>
-                    <div className="w-6/12 m-auto">
+                    <div className="w-6/12 m-auto half">
                         <form action="" onSubmit={this.handleSubmit} className="border w-8/12 m-auto shadow-md p-6 py-20 rounded-xl">
                             {/* <lottie-player src="https://assets2.lottiefiles.com/private_files/lf30_hdiNFs.json"  background="transparent" style={{width : "60%",margin: "auto"}}  speed="1"  loop  autoplay></lottie-player> */}
                             <img className="w-4/12 h-1/6  m-auto mb-8" src="/images/placeholder.png" alt="" />

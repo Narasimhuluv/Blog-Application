@@ -96,12 +96,12 @@ class Settings extends React.Component {
             )
         }
         return (
-            <div className="container flex p-10 py-20">
-                <div className="w-5/12 border rounded-lg">
+            <div className="container flex p-10 py-20 column">
+                <div className="w-5/12 border rounded-lg half">
                     <lottie-player src="https://assets10.lottiefiles.com/private_files/lf30_aiklsxys.json"  background="transparent"  speed="1"  style={{width: "100%"}}  loop autoplay></lottie-player>
                 </div>
 
-                <section className="max-w-4xl p-6 mx-auto bg-white rounded-lg  dark:bg-gray-800 ">
+                <section className="max-w-4xl p-6 mx-auto bg-white rounded-lg  dark:bg-gray-800 half">
                     <h2 className="text-lg font-semibold text-gray-700 capitalize dark:text-white">Account settings</h2>
             
                     <form onSubmit={this.handleSubmit}>
