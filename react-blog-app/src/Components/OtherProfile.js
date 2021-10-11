@@ -104,14 +104,14 @@ class OtherProfile extends React.Component{
                   });
                 } else {
                   console.log(res.json());
-                  // this.props.history.push(`/`);
+                //   this.props.history.push(`/profile/${profile}`);
                 }
               }).then((data) => {
             })
               .catch((errors) => {
                 console.log(errors);
                 this.setState({ errors });
-              });
+            });
         }
     }
     handleFollow = (username) => {
@@ -145,11 +145,13 @@ class OtherProfile extends React.Component{
                             </div>
                             <p className="text-sm">{otherprofile.bio}</p>
                         </div>
-                        <div className="ml-8">
+                        <div className="ml-8 flex">
                             {/* <p onClick={() =>this.handleFollow(otherprofile.username)}>Follow</p> */}
-                            {
-                                otherprofile.following === false   ? <p onClick={() =>this.handleFollow(otherprofile.username)} className="cursor-pointer text-green-400">Follow</p> : <p onClick={() =>this.handleUnFollow(otherprofile.username)} className="cursor-pointer text-green-400">UnFollow</p>
-                            }
+                            
+                                {/* // otherprofile.following === false   ? <p onClick={() =>this.handleFollow(otherprofile.username)} className="cursor-pointer text-green-400">Follow</p> : <p onClick={() =>this.handleUnFollow(otherprofile.username)} className="cursor-pointer text-green-400">UnFollow</p> */}
+                                <p onClick={() =>this.handleFollow(otherprofile.username)} className="cursor-pointer text-green-400">Follow</p> 
+                                <p onClick={() =>this.handleUnFollow(otherprofile.username)} className="cursor-pointer ml-4 text-red-400">UnFollow</p>
+                            
                         </div>
                     </section>
 
@@ -185,7 +187,7 @@ function EachArticle(props){
                 <img src={`/images/articles_images/${each.slug}.png`} alt="" />
                 {/* <img className="rounded-md mt-4" src={`/images/bg.png`} alt="" /> */}
                 <p className="mt-4 text-md font-bold text-gray-600">{(each.description).slice(0,68)} . . . . </p>
-                <p className="mt-2 text-sm font-bold text-gray-500">{(each.body)} . . . . </p>
+                <p className="mt-2 text-sm font-bold text-gray-500">{(each.body).slice(0,98)} . . . . </p>
                 <NavLink to={`/articles/${each.slug}`}>
                     <p className="mt-4 text-blue-500 font-bold">Read More . . .</p>
                 </NavLink>

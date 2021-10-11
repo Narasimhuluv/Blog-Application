@@ -150,13 +150,15 @@ class Profile extends React.Component {
                     <div className="w-2/12  flex m-auto font-light">
                         <div className="w-11/12  text-center">
                             <h5>Articles</h5>
-                            <h4>{this.state.CountNumber}</h4>
+                            <h4 className="font-extrabold">{this.state.CountNumber}</h4>
                         </div>
 
                         <div className="w-11/12 border-l-2  text-center">
                             <h5>Social Media</h5>
-                            <div>
-                                
+                            <div className="flex justify-between p-2">
+                                <a href="https://github.com/Narasimhuluv"><img className="w-6" src="https://cdn-icons-png.flaticon.com/512/270/270798.png" alt="" /></a>
+                                <a href="https://twitter.com/NarasimhuluV7"><img className="w-6" src="https://cdn-icons.flaticon.com/png/512/3025/premium/3025462.png?token=exp=1633928991~hmac=c9eaade5985b20c67a3ad09e88bb3157" alt="" /></a>
+                                <a href="https://www.linkedin.com/in/vasam-narasimhulu-8085901b3/"><img className="w-6" src="https://cdn-icons.flaticon.com/png/512/1377/premium/1377213.png?token=exp=1633929042~hmac=c67b527f3b4a2b0a724db4ebb2cdba2f" alt="" /></a>
                             </div>
                         </div>
                     </div>
@@ -180,13 +182,13 @@ class Profile extends React.Component {
                         eachuserData.map((each) => (
                             <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top">
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.updatedAt).format('L')}</span>
+                                    <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.createdAt).format('L')}</span>
                                    <div className="flex">
                                         <NavLink to={`/articles/${each.slug}/update`}>
-                                                <p><i className="far fa-edit ml-5 cursor-pointer text-xl text-yellow-700"></i></p>
+                                                <p><i className="far fa-edit ml-5 cursor-pointer text-xl text-yellow-500"></i></p>
                                         </NavLink>
 
-                                            <DeleteSweepIcon className="ml-3 cursor-pointer text-xl text-red-500" onClick={() => this.deleteArticle(each.slug)} />
+                                            <DeleteSweepIcon className="ml-3 cursor-pointer text-xl text-red-400" onClick={() => this.deleteArticle(each.slug)} />
                                             {/* <p><i className="far fa-delete ml-5 cursor-pointer text-xl text-yellow-700"></i></p> */}
                                    </div>
                                 </div>
@@ -225,7 +227,7 @@ class Profile extends React.Component {
                                     
                                     <div className="flex items-center justify-between mt-4">
                                         <NavLink to={`/articles/${each.slug}`} >
-                                            <p  className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Read more</p>
+                                            <p  className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Read more . . . .</p>
                                         </NavLink>
                                         <div className="flex items-center">
                                             <img className="hidden object-cover w-5 h-5 mx-4 rounded-full sm:block" src={each.author.image} alt="avatar" />

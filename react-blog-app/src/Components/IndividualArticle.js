@@ -74,6 +74,11 @@ class IndividualArticle extends React.Component{
                 console.log(res.json());
                 // window.location.reload();
               }
+            }).then((data) => {
+                console.log(data)
+                this.setState({
+                    EachArticle : data.article
+                })
             })
             .catch((errors) => {
               console.log(errors);
@@ -150,6 +155,7 @@ class IndividualArticle extends React.Component{
         }
         var eachArticle = this.state.EachArticle
         var AllArticles = this.state.AllArticles
+        console.log(eachArticle)
         return(
             <div>
                 {
@@ -201,10 +207,10 @@ function AuthenticatedIndividualArticle(props){
 
                                     <div className="flex ml-4">
                                         {
-                                            // eachArticle.favorited === true ? <p><i className={props.favorite === 'favorite' ? `fas fa-heart text-red-500` : `fas fa-heart`} onClick={() => handleFavorite(eachArticle.slug)}></i></p> : ""
+                                            // eachArticle.favorited === true ? <p><i className={props.favorited ? `fas fa-heart text-red-500` : `fas fa-heart`} onClick={() => handleFavorite(eachArticle.slug)}></i></p> :  <p><i className={props.favorited ?  `fas fa-heart text-red-500` : `fas fa-heart`} onClick={() => handleFavorite(eachArticle.slug)}></i></p>
                                         }
-                                        <p onClick={() => handleFavorite(eachArticle.slug)} className="cursor-pointer">Like</p>
-                                        <p><i className={props.favorite === 'unfavorite' ? `fas fa-heart text-black ml-2` : `fas fa-heart ml-2`} onClick={() => handleUnvorite(eachArticle.slug)}></i></p>
+                                        <p onClick={() => handleFavorite(eachArticle.slug)} className="cursor-pointer"><i className={props.favorite === 'favorite' ? 'far fa-heart text-red-500' : 'far fa-heart'}></i></p>
+                                        <p onClick={() => handleUnvorite(eachArticle.slug)} className="cursor-pointer"><i className={props.favorite === 'unfavorite' ? `far fa-heart text-black ml-2` : `fas fa-heart ml-2`} ></i></p>
                                     </div>
                                 </div>
     

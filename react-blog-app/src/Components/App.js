@@ -6,7 +6,7 @@ import IndividualArticle from './IndividualArticle';
 import Login from './Login';
 import Register from './Register';
 import NotFound  from './NotFound';
-import { localStoragekey, userVerify } from '../utls/ApiLinks';
+import {ArticleApi, localStoragekey, userVerify } from '../utls/ApiLinks';
 import NewArticle from './NewArticle';
 import Profile from './Profile';
 import Settings from './Settings';
@@ -83,7 +83,38 @@ class App extends React.Component{
                 isVerifying : false,
             })
         }
+
+        // this.FavoritedArticleData();
     }
+
+
+    // FavoritedArticleData = () => {
+    //     var storagekey = localStorage[localStoragekey];
+    //     if(storagekey){
+    //         fetch(ArticleApi + `/?favorited=${this.state.user.user.username}`,{
+    //             method : 'GET',
+    //             headers : {
+    //                 authorization : `Token ${storagekey}`,
+    //             },
+    //         })
+    //         .then((res) => {
+    //             if (!res.ok) {
+    //               throw new Error(res.statusText);
+    //             } else {
+    //               return res.json();
+    //             }
+    //           })
+    //         .then((favoriteArticleData) => {
+    //             console.log(favoriteArticleData.articlesCount)
+    //             this.setState({
+    //                 isLoading : false,
+    //                 favortedArticles : favoriteArticleData.articles,
+    //                 favortedArticlesCount : favoriteArticleData.articlesCount,
+    //                 activeTab : "favorited",
+    //             })
+    //         })
+    //     }
+    // }
     
 
     
@@ -110,8 +141,6 @@ function UnAthenticated(props){
     return(
         <Switch>
             <Route exact path="/users" component={Register} />
-
-            {/* <Route exact path="/users/login" component={Login} /> */}
 
             <Route exact path="/users/login">
                 <Login {...props} onUpdateUser={props.onUpdateUser}/>
@@ -144,7 +173,7 @@ function Athenticated(props){
             </Route> */}
 
             <Route exact path="/">
-                <Home {...props}/>
+                <Home {...props} user={user}/>
             </Route>
 
             <Route exact path="/articles/:slug" >

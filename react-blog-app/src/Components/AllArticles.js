@@ -3,7 +3,6 @@ import {NavLink} from 'react-router-dom';
 
 function AllArticles(props) {
     var each = props.each
-    var {handleAddCount} = props
     // console.log(handleAddCount)
     return (
         <>
@@ -22,12 +21,6 @@ function AllArticles(props) {
                         </div>
                     </NavLink>
                 </div>
-
-
-                {/* <div className="absolute top-0 right-3">
-                    <p onClick={handleAddCount} className="text-lg cursor-pointer"><i className="fab fa-gratipay"></i></p>
-                    <p  >{props.countLikes >= 1 ? props.countLikes : null }</p>
-                </div> */}
             </article>
         </>
     )

@@ -27,7 +27,7 @@ class Home extends React.Component{
         }
     }
     componentDidMount(){
-        this.FetchAllArticles()
+        this.FetchAllArticles();
     }
 
 
@@ -47,7 +47,7 @@ class Home extends React.Component{
     componentDidUpdate(_prevProps, prevState) {
         if (prevState.activeIndexPage !== this.state.activeIndexPage || prevState.tagName !== this.state.tagName) {
           this.FetchAllArticles();
-          this.Feed();
+        //   this.Feed();
         }
     }
 
@@ -61,7 +61,8 @@ class Home extends React.Component{
        await this.setState({
             tagName : each,
             activeTab : each,
-        }, this.FetchAllArticles, this.Feed)
+            feeddata : "",
+        },this.FetchAllArticles)
     }
     // handleTagArticle =  ({target}) => {
     //     console.log(target ,"clicked")
@@ -77,8 +78,9 @@ class Home extends React.Component{
         var offset = (this.state.activeIndexPage - 1) * 10
         var storagekey = localStorage[localStoragekey]
         var tag = this.state.tagName
+        // + (tag && `&tag=${tag}`)
         if(storagekey){
-                fetch(ArticleApi+ `/feed?/limit=${limit}&skip=${offset}`+ (tag && `&tag=${tag}`), {
+                fetch(ArticleApi+ `/feed?/limit=${limit}&skip=${offset} ` + (tag && `&tag=${tag}`), {
                 method: 'GET',
                 mode: 'cors',
                 cache: 'no-cache', 
@@ -95,7 +97,8 @@ class Home extends React.Component{
                 console.log(feedData.articles)
                 this.setState({
                     feeddata : feedData.articles,
-                    activeTab : "feed"
+                    activeTab : "feed",
+                    articleCount : feedData.articlesCount
                 })
             })
         }
@@ -106,23 +109,17 @@ class Home extends React.Component{
         this.setState({
             tagName : "",
             activeTab : ""
-        },this.FetchAllArticles , this.Feed)
+        },this.FetchAllArticles)
         
     }
 
     personalFeed = () => {
-        this.Feed();
+        this.Feed()
         this.setState({
+            articles : [],
             tagName : "",
-            actvieTab : "feed",
-        },this.FetchAllArticles, this.Feed)
-    }
-
-    handleAddCount = () => {
-        this.setState({
-            countLikes : this.state.countLikes + 1
+            actvieTab : "",
         })
-        console.log("counter clicked")
     }
     
     render(){
@@ -142,8 +139,8 @@ class Home extends React.Component{
             <>
                 {
                     this.props.isLogged ? 
-                    <AuthenticatedHome {...this.state} globalFeed={this.globalFeed} activeTab={activeTab} personalFeed={this.personalFeed} feeddata={feeddata}
-                    allArticles={allArticles} handleTag={this.handleTagArticle} updateCurrentIndex={this.updateCurrentPageIndex} handleAddCount={this.handleAddCount}/> 
+                    <AuthenticatedHome {...this.state} prop ={this.props} globalFeed={this.globalFeed} activeTab={activeTab} personalFeed={this.personalFeed} feeddata={feeddata}
+                    allArticles={allArticles} handleTag={this.handleTagArticle} updateCurrentIndex={this.updateCurrentPageIndex}/> 
                     :
                     <UnAthenticatedHome {...this.state} globalFeed={this.globalFeed} activeTab={activeTab} 
                     allArticles={allArticles} handleTag={this.handleTagArticle} updateCurrentIndex={this.updateCurrentPageIndex}/>
@@ -154,12 +151,12 @@ class Home extends React.Component{
 }
 
 function AuthenticatedHome(props){
-    var {globalFeed, activeTab, allArticles, handleTag , updateCurrentIndex, personalFeed , handleAddCount, feeddata} = props
-    console.log(activeTab)
+    var {globalFeed, activeTab, allArticles, handleTag , updateCurrentIndex, personalFeed , feeddata} = props
+
     return(
         <section>
     <div>
-        <Hero />
+        <Hero Logged={props.prop.isLogged}/>
 
         {/* Global Feed  */}
         <div className="flex items-center global_eachTag">
@@ -188,9 +185,9 @@ function AuthenticatedHome(props){
         <div className="w-full flex mt-10">
             <div className="w-8/12 flex justify-center flex-wrap ">
                 {
-                    activeTab === "" ? (
+                    activeTab === "" || props.tagName ? (
                         allArticles.map((each) => (
-                            <AllArticles {...props} each={each} handleAddCount={handleAddCount}/>
+                            <AllArticles {...props} each={each} />
                         ))
                     ) : ""
                 }
