@@ -134,7 +134,6 @@ class OtherProfile extends React.Component{
                 <img className="m-auto mt-36 w-2/12" src="/images/loading.gif" alt="" />
             )
         }
-        var {otherprofile} = this.state
         return(
             <>
                 <div className="container">

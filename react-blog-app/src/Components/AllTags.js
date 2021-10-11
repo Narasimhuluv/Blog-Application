@@ -1,5 +1,5 @@
 import React from 'react';
-import { api, ArticleApi, tagsUrl } from '../utls/ApiLinks';
+import { tagsUrl } from '../utls/ApiLinks';
 class AllTags extends React.Component{
     constructor(){
         super();
@@ -18,7 +18,7 @@ class AllTags extends React.Component{
         })
     }
     render(){
-        var {articles, activeTab, tagName} = this.props
+        var {tagName} = this.props
         var tags = this.state.allTags
         // filterTags 
         var filterTags = tags.filter((elem, index) => {

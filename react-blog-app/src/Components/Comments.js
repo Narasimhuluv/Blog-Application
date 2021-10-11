@@ -13,7 +13,6 @@ class Comments extends React.Component{
     
     fetchComments = () => {
         var {slug} = this.props.match.params;
-        console.log(slug)
         var storagekey = localStorage[localStoragekey];
         if(storagekey){
             fetch(ArticleApi + `/${slug}/comments`, {
@@ -48,7 +47,6 @@ class Comments extends React.Component{
 
     fetchDeleteComments =  (id) => {
         var {slug} = this.props.match.params;
-        console.log(id)
         var storagekey = localStorage[localStoragekey];
        if(storagekey){
          fetch(ArticleApi + `/${slug}/comments/${id}`, {
@@ -97,20 +95,20 @@ class Comments extends React.Component{
             show : false,
         })
     }
-    UpdateComment = () => {
-        var {slug} = this.props.match.params;
-        var storagekey = localStorage[localStoragekey];
-        if(storagekey){
-            fetch()
-        }
-    }
+    // UpdateComment = () => {
+    //     var {slug} = this.props.match.params;
+    //     var storagekey = localStorage[localStoragekey];
+    //     if(storagekey){
+    //         fetch()
+    //     }
+    // }
     handleCommentUpdate = (event) => {
         event.preventDefault();
     }
     render(){
         var comments = this.props.allcomments
         var currentUser = this.props.indiProps.user.user.username
-        var eachArticle = this.props.eachArticle;
+        // var eachArticle = this.props.eachArticle;
 
         return(
             <>

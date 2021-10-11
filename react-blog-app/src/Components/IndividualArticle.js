@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import {api,ArticleApi} from '../utls/ApiLinks';
+import {ArticleApi} from '../utls/ApiLinks';
 import { NavLink } from 'react-router-dom';
 import {localStoragekey} from  '../utls/ApiLinks'
 import Comments from './Comments';
@@ -184,9 +184,9 @@ class IndividualArticle extends React.Component{
 
 function AuthenticatedIndividualArticle(props){
     // var onUpdateArticle = props.onUpdateArticle
-    var {eachArticle, TenArticles, handleFavorite, handleUnvorite, onUpdateArticle, fetchGetComments , indiProps} = props
-    var numbers = [1,2,3,4,5,6,7,8,9,10];
-    var randomNumber = numbers[Math.floor(Math.random() * numbers.length)]
+    var {eachArticle, handleFavorite, handleUnvorite, fetchGetComments } = props
+    // var numbers = [1,2,3,4,5,6,7,8,9,10];
+    // var randomNumber = numbers[Math.floor(Math.random() * numbers.length)]
     return(
         <>
             <div className="container">

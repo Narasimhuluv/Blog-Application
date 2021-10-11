@@ -6,13 +6,12 @@ import IndividualArticle from './IndividualArticle';
 import Login from './Login';
 import Register from './Register';
 import NotFound  from './NotFound';
-import {ArticleApi, localStoragekey, userVerify } from '../utls/ApiLinks';
+import {localStoragekey, userVerify } from '../utls/ApiLinks';
 import NewArticle from './NewArticle';
 import Profile from './Profile';
 import Settings from './Settings';
 import UpdateArticle from './UpdateArticle';
 import OtherProfile from './OtherProfile';
-import Comments from './Comments';
 
 class App extends React.Component{
     constructor(props){

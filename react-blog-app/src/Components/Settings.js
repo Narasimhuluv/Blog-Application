@@ -1,5 +1,5 @@
 import React from 'react';
-import {api, ArticleApi , localStoragekey} from '../utls/ApiLinks';
+import {api , localStoragekey} from '../utls/ApiLinks';
 import {withRouter} from 'react-router';
 
 
@@ -58,7 +58,7 @@ class Settings extends React.Component {
 
      // Validates email address of course.
     validEmail = (email) => {
-        var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+        var re = /^\s*[\w\-+_]+(\.[\w\-+_]+)*@[\w\-+_]+\.[\w\-+_]+(\.[\w\-+_]+)*\s*$/;
         return re.test(email)
     }
 

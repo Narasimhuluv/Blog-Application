@@ -136,10 +136,10 @@ class Profile extends React.Component {
         return (
             <div className="container">
                 <article className="rounded-md overflow-hidden  my-3">
-                    <img src="/images/profile.png" className="w-full" />
+                    <img src="/images/profile.png" className="w-full" alt="background-img" />
     
                     <div className="flex justify-center -mt-12">
-                        <img src={user.image} className="border rounded-md border-white  -mt-3 w-28" />		
+                        <img src={user.image} className="border rounded-md border-white  -mt-3 w-28" alt="profile_image" />		
                     </div>
                     
                     <div className="text-center px-3 pb-6 pt-2">

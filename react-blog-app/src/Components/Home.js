@@ -1,7 +1,7 @@
 // import { ThreeSixty } from '@mui/icons-material';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import {api,ArticleApi} from '../utls/ApiLinks'
+import {ArticleApi} from '../utls/ApiLinks'
 import AllArticles from './AllArticles';
 import AllTags from './AllTags';
 import Hero from './Hero';
@@ -123,10 +123,8 @@ class Home extends React.Component{
     }
     
     render(){
-        var displayAllArticles = [];
         var allArticles = this.state.articles;
         var isLoading = this.state.isLoading;
-        var tagsName = this.state.tagName;
         var feeddata = this.state.feeddata
         
         if(isLoading){
