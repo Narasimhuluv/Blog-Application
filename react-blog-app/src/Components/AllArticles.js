@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 import {NavLink} from 'react-router-dom';
 
 function AllArticles(props) {
+    useEffect(() => {
+        Aos.init({duration : 2000});
+    },[])
     var each = props.each
     return (
         <>
-            <article key={each.slug} className="border my-3 w-5/12 space-y-4 m-5 rounded-xl shadow-md h-72 relative overflow-hidden article">
+            <article key={each.slug} className="border my-3 w-5/12 space-y-4 m-5 rounded-xl shadow-md h-72 relative overflow-hidden article" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
                 <img src={"/images/articles_images/"+each.slug+".png"} alt="" />
                 <div className="px-4">
                     <h2 className="font-bold">{each.title}</h2>

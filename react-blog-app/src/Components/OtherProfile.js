@@ -1,8 +1,10 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { withRouter } from 'react-router';
 import {api, ArticleApi, localStoragekey} from '../utls/ApiLinks';
 import moment from 'moment';
 import { NavLink } from 'react-router-dom';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 class OtherProfile extends React.Component{
     constructor(props){
@@ -177,9 +179,12 @@ class OtherProfile extends React.Component{
 }
 function EachArticle(props){
     var {each} = props;
+    useEffect(() => {
+        Aos.init({duration : 1000});
+    },[])
     return(
         <>
-            <article className="mb-14">
+            <article className="mb-14"       data-aos="fade-up" data-aos-anchor-placement="center-center">
                 <span className="text-gray-600">{moment(each.createdAt).format('L')}</span>
                 <h2 className="text-2xl text-gray-700 font-extrabold">{each.title}</h2>
                 {/* <img src={ } alt="" /> */}

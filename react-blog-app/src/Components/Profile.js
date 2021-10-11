@@ -1,9 +1,11 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import {ArticleApi, localStoragekey} from '../utls/ApiLinks';
 import moment from 'moment';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 class Profile extends React.Component {
     constructor(props){
@@ -118,7 +120,6 @@ class Profile extends React.Component {
         this.setState({
             activeTab : "active"
         })
-        console.log("My Articles")
     }
 
     render(){
@@ -130,9 +131,7 @@ class Profile extends React.Component {
         }
         var user = this.props.user.user;
         var eachuserData = this.state.eachuserData;
-        console.log(this.state.activeTab)
         var fav = this.state.favortedArticles
-        console.log(this.props , "profile props")
         return (
             <div className="container">
                 <article className="rounded-md overflow-hidden  my-3">
@@ -180,34 +179,9 @@ class Profile extends React.Component {
                    {
                        this.state.activeTab === "active" ? (
                         eachuserData.map((each) => (
-                            <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.createdAt).format('L')}</span>
-                                   <div className="flex">
-                                        <NavLink to={`/articles/${each.slug}/update`}>
-                                                <p><i className="far fa-edit ml-5 cursor-pointer text-xl text-yellow-500"></i></p>
-                                        </NavLink>
 
-                                            <DeleteSweepIcon className="ml-3 cursor-pointer text-xl text-red-400" onClick={() => this.deleteArticle(each.slug)} />
-                                            {/* <p><i className="far fa-delete ml-5 cursor-pointer text-xl text-yellow-700"></i></p> */}
-                                   </div>
-                                </div>
-                        
-                                <div className="mt-2">
-                                    <p className="text-2xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline">{each.title}</p>
-                                    <p className="mt-2 text-gray-600 dark:text-gray-300">{(each.description).slice(0,99)} . . . . </p>
-                                </div>
-                                
-                                <div className="flex items-center justify-between mt-4">
-                                    <NavLink to={`/articles/${each.slug}`} >
-                                        <p  className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Read more</p>
-                                    </NavLink>
-                                    <div className="flex items-center">
-                                        <img className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src={each.author.image} alt="avatar" />
-                                        <p className="font-bold text-gray-700 cursor-pointer dark:text-gray-200">{each.author.username}</p>
-                                    </div>
-                                </div> 
-                            </article>
+                            <UserArticle each={each}/>
+                            
                        ))
                        ) : ""
                    }
@@ -215,26 +189,9 @@ class Profile extends React.Component {
                    {
                        this.state.activeTab === "favorited" ? (
                         fav.map((each) => (
-                                <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.createdAt).format('L')}</span>
-                                    </div>
-                            
-                                    <div className="mt-2">
-                                        <p className="text-2xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline">{(each.title).slice(0,40)} . . . . .</p>
-                                        <p className="mt-2 text-gray-600 dark:text-gray-300"> {(each.description).slice(0,68)}. . . . </p>
-                                    </div>
-                                    
-                                    <div className="flex items-center justify-between mt-4">
-                                        <NavLink to={`/articles/${each.slug}`} >
-                                            <p  className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Read more . . . .</p>
-                                        </NavLink>
-                                        <div className="flex items-center">
-                                            <img className="hidden object-cover w-5 h-5 mx-4 rounded-full sm:block" src={each.author.image} alt="avatar" />
-                                            <p className="font-bold text-gray-700 cursor-pointer text-sm dark:text-gray-200">{each.author.username}</p>
-                                        </div>
-                                    </div> 
-                                </article>
+
+                                <FavoritedArticle  each={each}/>
+                                
                        ))
                        ) : ""
                    }
@@ -242,6 +199,83 @@ class Profile extends React.Component {
             </div>
         )
     }
+}
+
+function UserArticle(props){
+
+    useEffect(() => {
+        Aos.init({duration : 2000});
+    },[])
+    var {each} = props
+    return(
+        <>
+            <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top" data-aos="zoom-in">
+                <div className="flex items-center justify-between">
+                    <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.createdAt).format('L')}</span>
+                    <div className="flex">
+                        <NavLink to={`/articles/${each.slug}/update`}>
+                                <p><i className="far fa-edit ml-5 cursor-pointer text-xl text-yellow-500"></i></p>
+                        </NavLink>
+
+                            <DeleteSweepIcon className="ml-3 cursor-pointer text-xl text-red-400" onClick={() => this.deleteArticle(each.slug)} />
+                            {/* <p><i className="far fa-delete ml-5 cursor-pointer text-xl text-yellow-700"></i></p> */}
+                    </div>
+                </div>
+        
+                <div className="mt-2">
+                    <p className="text-2xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline">{each.title}</p>
+                    <p className="mt-2 text-gray-600 dark:text-gray-300">{(each.description).slice(0,99)} . . . . </p>
+                </div>
+                
+                <div className="flex items-center justify-between mt-4">
+                    <NavLink to={`/articles/${each.slug}`} >
+                        <p  className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Read more</p>
+                    </NavLink>
+                    <div className="flex items-center">
+                        <img className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src={each.author.image} alt="avatar" />
+                        <p className="font-bold text-gray-700 cursor-pointer dark:text-gray-200">{each.author.username}</p>
+                    </div>
+                </div> 
+            </article>
+
+        </>
+    )
+}
+
+
+function FavoritedArticle(props){
+    var {each} = props
+    useEffect(() => {
+        Aos.init({duration : 1000});
+    },[])
+    return(
+        <>
+            <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top" data-aos="zoom-in-right">
+                <div className="flex items-center justify-between">
+                    <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.createdAt).format('L')}</span>
+                </div>
+        
+                <div className="mt-2">
+                    <p className="text-2xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline">{(each.title).slice(0,40)} . . . . .</p>
+                    <p className="mt-2 text-gray-600 dark:text-gray-300"> {(each.description).slice(0,68)}. . . . </p>
+                </div>
+                
+                <div className="flex items-center justify-between mt-4">
+                    <NavLink to={`/articles/${each.slug}`} >
+                        <p  className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Read more . . . .</p>
+                    </NavLink>
+
+                    <NavLink to={`/profiles/${each.author.username}`}>
+                        <div className="flex items-center">
+                            <img className="hidden object-cover w-5 h-5 mx-4 rounded-full sm:block" src={each.author.image} alt="avatar" />
+                            <p className="font-bold text-gray-700 cursor-pointer text-sm dark:text-gray-200">{each.author.username}</p>
+                        </div>
+                    </NavLink>
+                </div> 
+            </article>
+
+        </>
+    )
 }
 
 export default withRouter(Profile);
