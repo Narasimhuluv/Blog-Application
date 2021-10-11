@@ -33,27 +33,23 @@ class App extends React.Component{
             isVerifying : false
         })
         localStorage.getItem(localStoragekey , userData.token)
-        // console.log(this.state.user, "user Data")
     }
     onUpdateArticle = (updated) => {
         this.setState({
             UpdateArticle : updated,
         })
-        console.log(this.state.UpdateArticle, "update 1")
     }
 
     onUpdatedComment = (comment) => {
         this.setState({
             UpdateComment : comment
         })
-        console.log(this.state.UpdateComment, "update comment")
     }
     
     onUpdateProfile = (profile) => {
         this.setState({
             UpdateProfile : profile
         })
-        console.log(this.state.UpdateProfile, "updated profile")
     }
 
     logOut = () => {
@@ -159,7 +155,6 @@ function UnAthenticated(props){
 }
 
 function Athenticated(props){
-    // console.log(props , "i am consoling user data")
     var user = props.user
     return(
         <Switch>

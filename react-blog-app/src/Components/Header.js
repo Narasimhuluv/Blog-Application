@@ -3,7 +3,6 @@ import { withRouter } from 'react-router';
 import {NavLink} from 'react-router-dom'
 
 function Header(props) {
-    // console.log(props.logout , "logout")
     return (
         <header>
             {
