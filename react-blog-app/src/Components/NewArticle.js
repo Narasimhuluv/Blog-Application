@@ -52,7 +52,7 @@ class NewArticle extends React.Component{
                 }
             })
             .then((newArticleData) => {
-                console.log(newArticleData)
+                // console.log(newArticleData)
                 this.props.history.push('/')
                 this.setState({
                     title : "",

@@ -64,7 +64,7 @@ class UpdateArticle extends React.Component{
                 })
             }).then((res) => res.json())
               .then((updatedArticle) =>  {
-                console.log(updatedArticle, "updated article")
+                // console.log(updatedArticle, "updated article")
                 this.props.onUpdateArticle(updatedArticle)
                 this.props.history.push(`/articles/${slug}`)
             })
@@ -110,7 +110,7 @@ class UpdateArticle extends React.Component{
                 <img className="m-auto mt-36 w-2/12" src="/images/loading.gif" alt="" />
             )
         }
-        console.log(this.props, "updaate article")
+        // console.log(this.props, "updaate article")
         var {title, description, body, tagList} = this.state.errors
         return(
             <div>

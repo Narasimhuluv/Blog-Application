@@ -44,7 +44,7 @@ class Login extends React.Component {
             return res.json()
         })
         .then((userData) => {
-            console.log({userData})
+            // console.log({userData})
             this.setState({
                 username: '',
                 email: '',
@@ -81,7 +81,7 @@ class Login extends React.Component {
 
         
     render(){
-        console.log(this.props.isLogged)
+        // console.log(this.props.isLogged)
         let { email, password } = this.state.errors;
         return (
             <section className="container">

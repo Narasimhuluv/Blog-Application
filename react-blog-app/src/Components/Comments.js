@@ -13,7 +13,7 @@ class Comments extends React.Component{
     
     fetchComments = () => {
         var {slug} = this.props.match.params;
-        console.log(slug)
+        // console.log(slug)
         var storagekey = localStorage[localStoragekey];
         if(storagekey){
             fetch(ArticleApi + `/${slug}/comments`, {
@@ -38,7 +38,7 @@ class Comments extends React.Component{
                 this.props.onUpdateArticle(comment);
                 // this.props.onUpdateComment(comment);
                 this.props.history.push(`/articles/${slug}`)
-                console.log(comment)
+                // console.log(comment)
                 this.setState({
                     body : ""
                 }, this.props.fetchGetComments)
@@ -48,7 +48,7 @@ class Comments extends React.Component{
 
     fetchDeleteComments =  (id) => {
         var {slug} = this.props.match.params;
-        console.log(id)
+        // console.log(id)
         var storagekey = localStorage[localStoragekey];
        if(storagekey){
          fetch(ArticleApi + `/${slug}/comments/${id}`, {
@@ -71,7 +71,7 @@ class Comments extends React.Component{
 
     handleCommentDelete = (id) => {
         this.fetchDeleteComments(id);
-        console.log("clicked deleted button")
+        // console.log("clicked deleted button")
     }
 
     handleComment = ({target}) => {
@@ -176,7 +176,7 @@ class Comments extends React.Component{
 
 function Model(props){
     var {handleShowClose, handleComment, handleCommentUpdate} = props
-    console.log(props, "hello props for model")
+    // console.log(props, "hello props for model")
     return (
         <>
             <div className="w-full border bg-black relative">

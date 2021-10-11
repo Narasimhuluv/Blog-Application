@@ -25,7 +25,7 @@ class OtherProfile extends React.Component{
         fetch(api + `/profiles/${profile}`)
         .then((res) => res.json())
         .then((profileData) => {
-            console.log(profileData.profile, "hello thing ")
+            // console.log(profileData.profile, "hello thing ")
             this.setState({
                 isLoading : false,
                 otherprofile : profileData.profile,
@@ -38,7 +38,7 @@ class OtherProfile extends React.Component{
         fetch(ArticleApi + `/?author=${profile}`)
         .then((res) => res.json())
         .then((profileArticleData) => {
-                console.log(profileArticleData, "narender")
+                // console.log(profileArticleData, "Hello")
              this.setState({
                 ProfileArticles : profileArticleData.articles
              })
@@ -116,17 +116,17 @@ class OtherProfile extends React.Component{
     }
     handleFollow = (username) => {
         this.FollowUser(username);
-        console.log("Follow")
+        // console.log("Follow")
     }
 
     handleUnFollow = (username) => {
         this.UnFollowUser(username);
-        console.log('Un Follow')
+        // console.log('Un Follow')
     }
 
     render(){
         var isLoading = this.state.isLoading;
-        console.log(this.props)
+        // console.log(this.props)
         var otherprofile = this.state.otherprofile
         var profileArticles = this.state.ProfileArticles
         if(isLoading){
