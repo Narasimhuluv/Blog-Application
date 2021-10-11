@@ -76,7 +76,6 @@ class UpdateArticle extends React.Component{
     //     var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
     //     return re.test(email)
     // }
-
     handleChange = ({target}) => {
         var {name, value} = target;
         var errors = this.state.errors
