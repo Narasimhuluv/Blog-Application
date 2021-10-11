@@ -3,7 +3,6 @@ import {NavLink} from 'react-router-dom';
 
 function AllArticles(props) {
     var each = props.each
-    // console.log(handleAddCount)
     return (
         <>
             <article key={each.slug} className="border my-3 w-5/12 space-y-4 m-5 rounded-xl shadow-md h-72 relative overflow-hidden article">

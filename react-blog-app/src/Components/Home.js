@@ -94,7 +94,7 @@ class Home extends React.Component{
                 body: JSON.stringify()
             }).then((res) => res.json())
             .then((feedData) => {
-                console.log(feedData.articles)
+                // console.log(feedData.articles)
                 this.setState({
                     feeddata : feedData.articles,
                     activeTab : "feed",

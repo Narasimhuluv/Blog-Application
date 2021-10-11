@@ -40,21 +40,21 @@ class App extends React.Component{
         this.setState({
             UpdateArticle : updated,
         })
-        console.log(this.state.UpdateArticle, "update 1")
+        // console.log(this.state.UpdateArticle, "update 1")
     }
 
     onUpdatedComment = (comment) => {
         this.setState({
             UpdateComment : comment
         })
-        console.log(this.state.UpdateComment, "update comment")
+        // console.log(this.state.UpdateComment, "update comment")
     }
     
     onUpdateProfile = (profile) => {
         this.setState({
             UpdateProfile : profile
         })
-        console.log(this.state.UpdateProfile, "updated profile")
+        // console.log(this.state.UpdateProfile, "updated profile")
     }
 
     logOut = () => {

@@ -56,14 +56,14 @@ class Register extends React.Component {
             return res.json()
         })
             .then(({user}) => {
-            console.log({user})
+            // console.log({user})
             this.setState({
                 username: '',
                 email: '',
                 password: '',
             })
             this.props.history.push('/users/login');
-            console.log("successfully register")
+            // console.log("successfully register")
         }).catch((errors) => this.setState({errors}))
     }
 

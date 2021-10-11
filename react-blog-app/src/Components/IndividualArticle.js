@@ -33,7 +33,7 @@ class IndividualArticle extends React.Component{
         fetch(ArticleApi + `/${slug}`).then((res) => {
            return res.json()
         }).then((articleData) => {
-            console.log(articleData.article, "each Article data")
+            // console.log(articleData.article, "each Article data")
             this.setState({
                 EachArticle : articleData.article,
                 isLoading  : false,
@@ -75,7 +75,7 @@ class IndividualArticle extends React.Component{
                 // window.location.reload();
               }
             }).then((data) => {
-                console.log(data)
+                // console.log(data)
                 this.setState({
                     EachArticle : data.article
                 })
@@ -155,7 +155,7 @@ class IndividualArticle extends React.Component{
         }
         var eachArticle = this.state.EachArticle
         var AllArticles = this.state.AllArticles
-        console.log(eachArticle)
+        // console.log(eachArticle)
         return(
             <div>
                 {

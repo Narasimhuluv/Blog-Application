@@ -85,7 +85,7 @@ class Profile extends React.Component {
                 }
               })
             .then((favoriteArticleData) => {
-                console.log(favoriteArticleData.articlesCount)
+                // console.log(favoriteArticleData.articlesCount)
                 this.setState({
                     isLoading : false,
                     favortedArticles : favoriteArticleData.articles,
@@ -118,7 +118,7 @@ class Profile extends React.Component {
         this.setState({
             activeTab : "active"
         })
-        console.log("My Articles")
+        // console.log("My Articles")
     }
 
     render(){
@@ -130,9 +130,9 @@ class Profile extends React.Component {
         }
         var user = this.props.user.user;
         var eachuserData = this.state.eachuserData;
-        console.log(this.state.activeTab)
+        // console.log(this.state.activeTab)
         var fav = this.state.favortedArticles
-        console.log(this.props , "profile props")
+        // console.log(this.props , "profile props")
         return (
             <div className="container">
                 <article className="rounded-md overflow-hidden  my-3">
