@@ -14,7 +14,6 @@ function Header(props) {
 
 function AuthenticatedHeader(props){
     var {logout} = props
-    // console.log(logout, "logout")
     return(
         <header className="bg-green-100 header">
             <div className="container flex justify-between items-center column">

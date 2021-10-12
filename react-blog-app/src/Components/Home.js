@@ -48,7 +48,6 @@ class Home extends React.Component{
     componentDidUpdate(_prevProps, prevState) {
         if (prevState.activeIndexPage !== this.state.activeIndexPage || prevState.tagName !== this.state.tagName) {
           this.FetchAllArticles();
-        //   this.Feed();
         }
     }
 
@@ -74,7 +73,6 @@ class Home extends React.Component{
     //  }
 
     Feed = () => {
-        // /api/articles/feed
         var limit = this.state.articlesPerPage
         var offset = (this.state.activeIndexPage - 1) * 10
         var storagekey = localStorage[localStoragekey]

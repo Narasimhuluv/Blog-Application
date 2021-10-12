@@ -69,12 +69,6 @@ class UpdateArticle extends React.Component{
             })
         }
     }
-    
-    // // Validates email address of course.
-    // validEmail = (email) => {
-    //     var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
-    //     return re.test(email)
-    // }
 
     handleChange = ({target}) => {
         var {name, value} = target;

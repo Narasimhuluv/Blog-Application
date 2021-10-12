@@ -43,7 +43,6 @@ class NewArticle extends React.Component{
                     },
                 }),
             })
-            // .then((res) => res.json())
             .then((res) => {
                 if(!res.ok){
                     throw new Error ('Can not create new article!')

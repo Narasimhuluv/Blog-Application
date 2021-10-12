@@ -108,7 +108,6 @@ class Comments extends React.Component{
     render(){
         var comments = this.props.allcomments
         var currentUser = this.props.indiProps.user.user.username
-        // var eachArticle = this.props.eachArticle;
 
         return(
             <>
@@ -126,7 +125,7 @@ class Comments extends React.Component{
                 <div className="container w-8/12">
                     {
                         comments.map((eachComment) => (
-                            <div className="w-full my-8 ">
+                            <div className="w-full my-8 " key={eachComment.author.username}>
                                 <article key={eachComment.id} className="flex items-start mb-3 w-5/12 ">
                                     <img className="rounded-full image_size" src={eachComment.author.image} alt="" />
                                     <div className='ml-4 -mt-1'>

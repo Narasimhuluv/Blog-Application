@@ -40,7 +40,7 @@ class OtherProfile extends React.Component{
         fetch(ArticleApi + `/?author=${profile}`)
         .then((res) => res.json())
         .then((profileArticleData) => {
-                console.log(profileArticleData, "narender")
+                console.log(profileArticleData)
              this.setState({
                 ProfileArticles : profileArticleData.articles
              })

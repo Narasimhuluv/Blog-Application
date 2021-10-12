@@ -6,7 +6,7 @@ import IndividualArticle from './IndividualArticle';
 import Login from './Login';
 import Register from './Register';
 import NotFound  from './NotFound';
-import {localStoragekey, userVerify } from '../utls/ApiLinks';
+import {ArticleApi,localStoragekey, userVerify } from '../utls/ApiLinks';
 import NewArticle from './NewArticle';
 import Profile from './Profile';
 import Settings from './Settings';
@@ -23,6 +23,7 @@ class App extends React.Component{
             isVerifying: true,
             UpdateComment : null,
             UpdateProfile : null,
+            favortedArticles : [],
         }
     }
 
@@ -71,46 +72,44 @@ class App extends React.Component{
                 return res.json().then(({errors}) => {
                     return Promise.reject(errors)
                 })
-            }).then((user) => this.onUpdateUser(user))
+            }).then((user) => {
+                this.onUpdateUser(user)
+                // console.log(user.user.username, "hello user")
+                this.FavoritedArticleData(user.user.username);
+            })
             .catch(errors => console.log(errors))
         }else{
             this.setState({
                 isVerifying : false,
             })
         }
-
-        // this.FavoritedArticleData();
     }
 
+    FavoritedArticleData = (username) => {
+        var storagekey = localStorage[localStoragekey];
+        if(storagekey){
+            fetch(ArticleApi + `/?favorited=${username}`,{
+                method : 'GET',
+                headers : {
+                    authorization : `Token ${storagekey}`,
+                },
+            })
+            .then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.statusText);
+                } else {
+                  return res.json();
+                }
+              })
+            .then((favoriteArticleData) => {
+                this.setState({
+                    isLoading : false,
+                    favortedArticles : favoriteArticleData.articles,
+                })
+            })
+        }
+    }
 
-    // FavoritedArticleData = () => {
-    //     var storagekey = localStorage[localStoragekey];
-    //     if(storagekey){
-    //         fetch(ArticleApi + `/?favorited=${this.state.user.user.username}`,{
-    //             method : 'GET',
-    //             headers : {
-    //                 authorization : `Token ${storagekey}`,
-    //             },
-    //         })
-    //         .then((res) => {
-    //             if (!res.ok) {
-    //               throw new Error(res.statusText);
-    //             } else {
-    //               return res.json();
-    //             }
-    //           })
-    //         .then((favoriteArticleData) => {
-    //             console.log(favoriteArticleData.articlesCount)
-    //             this.setState({
-    //                 isLoading : false,
-    //                 favortedArticles : favoriteArticleData.articles,
-    //                 favortedArticlesCount : favoriteArticleData.articlesCount,
-    //                 activeTab : "favorited",
-    //             })
-    //         })
-    //     }
-    // }
-    
 
     
     render(){
@@ -156,6 +155,7 @@ function UnAthenticated(props){
 
 function Athenticated(props){
     var user = props.user
+    // console.log(props)
     return(
         <Switch>
             {/* <Route exact path="/users" component={Register} /> */}

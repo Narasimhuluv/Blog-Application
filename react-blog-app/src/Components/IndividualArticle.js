@@ -28,11 +28,9 @@ class IndividualArticle extends React.Component{
     // }
     FetchEachArticle = () => {
         var {slug} = this.props.match.params;
-        // console.log(slug)
         fetch(ArticleApi + `/${slug}`).then((res) => {
            return res.json()
         }).then((articleData) => {
-            console.log(articleData.article, "each Article data")
             this.setState({
                 EachArticle : articleData.article,
                 isLoading  : false,
@@ -42,7 +40,6 @@ class IndividualArticle extends React.Component{
 
 
     AddFavorite = (slug) => {
-        // var {slug} = this.props.match.params
         var storagekey = localStorage[localStoragekey];
         fetch(ArticleApi + `/${slug}/favorite`, {
             method: 'POST',
@@ -69,7 +66,7 @@ class IndividualArticle extends React.Component{
                 console.log(data)
                 this.setState({
                     EachArticle : data.article
-                })
+                },this.FetchEachArticle)
             })
             .catch((errors) => {
               console.log(errors);
@@ -77,7 +74,6 @@ class IndividualArticle extends React.Component{
     }
 
     removeFavorite = (slug) => {
-        // var {slug} = this.props.match.params
         var storagekey = localStorage[localStoragekey];
         if(storagekey){
             fetch(ArticleApi + `/${slug}/favorite`, {
@@ -97,9 +93,9 @@ class IndividualArticle extends React.Component{
                     return res.json().then(({ errors }) => {
                       return Promise.reject(errors);
                     });
-                  } else {
-                    console.log(res.json());
-                  }
+                  } 
+                  console.log(res.json());
+                  this.FetchEachArticle();
                 })
                 .catch((errors) => {
                   console.log(errors);
@@ -116,10 +112,8 @@ class IndividualArticle extends React.Component{
             this.setState({
                 allcomments : all.comments
             })
-            // console.log(this.state.allcomments)
         })
     }
-
 
     handleFavorite = (slug) => {
         this.AddFavorite(slug);
@@ -135,9 +129,7 @@ class IndividualArticle extends React.Component{
         })
     }
 
-
     render(){
-        // console.log(this.props)
         var isLoading = this.state.isLoading;
         if(isLoading){
             return (
@@ -146,7 +138,6 @@ class IndividualArticle extends React.Component{
         }
         var eachArticle = this.state.EachArticle
         var AllArticles = this.state.AllArticles
-        console.log(eachArticle)
         return(
             <div>
                 {
@@ -174,10 +165,15 @@ class IndividualArticle extends React.Component{
 }
 
 function AuthenticatedIndividualArticle(props){
-    // var onUpdateArticle = props.onUpdateArticle
-    var {eachArticle, handleFavorite, handleUnvorite, fetchGetComments } = props
-    // var numbers = [1,2,3,4,5,6,7,8,9,10];
-    // var randomNumber = numbers[Math.floor(Math.random() * numbers.length)]
+    var fav = []
+    var {eachArticle, handleFavorite, handleUnvorite, fetchGetComments,indiProps } = props;
+    
+    indiProps.favortedArticles.forEach((each) => {
+        if(each.slug === eachArticle.slug){
+            return fav.push(each)
+        }
+    })
+    var favor = fav[0];
     return(
         <>
             <div className="container">
@@ -197,11 +193,14 @@ function AuthenticatedIndividualArticle(props){
                                     </div>
 
                                     <div className="flex ml-4">
+
                                         {
-                                            // eachArticle.favorited === true ? <p><i className={props.favorited ? `fas fa-heart text-red-500` : `fas fa-heart`} onClick={() => handleFavorite(eachArticle.slug)}></i></p> :  <p><i className={props.favorited ?  `fas fa-heart text-red-500` : `fas fa-heart`} onClick={() => handleFavorite(eachArticle.slug)}></i></p>
+                                            favor  ? <p onClick={() => handleUnvorite(eachArticle.slug)} className="cursor-pointer"><img style={{width:"25px" , display:"inline-block"}} src="https://cdn-icons.flaticon.com/png/512/471/premium/471698.png?token=exp=1634063968~hmac=ecc4c5692a4eba07d49c76dfcf876f1b" alt="" />  </p> :  <p onClick={() => handleFavorite(eachArticle.slug)} className="cursor-pointer"><img style={{width:"25px" , display:"inline-block"}} src="https://cdn-icons-png.flaticon.com/512/263/263417.png" alt="" /></p>
                                         }
-                                        <p onClick={() => handleFavorite(eachArticle.slug)} className="cursor-pointer"><i className={props.favorite === 'favorite' ? 'far fa-heart text-red-500' : 'far fa-heart'}></i></p>
-                                        <p onClick={() => handleUnvorite(eachArticle.slug)} className="cursor-pointer"><i className={props.favorite === 'unfavorite' ? `far fa-heart text-black ml-2` : `fas fa-heart ml-2`} ></i></p>
+                                        {
+                                            // !favor ? <p onClick={() => handleFavorite(eachArticle.slug)} className="cursor-pointer"><img style={{width:"25px" , display:"inline-block"}} src="https://cdn-icons-png.flaticon.com/512/263/263417.png" alt="" /></p> : ""
+                                        }
+
                                     </div>
                                 </div>
     

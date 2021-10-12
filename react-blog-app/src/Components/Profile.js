@@ -47,7 +47,6 @@ class Profile extends React.Component {
     }
 
     DeleteArticle = (slug) => {
-        // var {slug} = this.props.match.params
         var storagekey = localStorage[localStoragekey]
         if(storagekey){
             fetch(ArticleApi + `/${slug}`, {
@@ -153,12 +152,8 @@ class Profile extends React.Component {
                         </div>
 
                         <div className="w-11/12 border-l-2  text-center">
-                            <h5>Social Media</h5>
-                            <div className="flex justify-between p-2">
-                                <a href="https://github.com/Narasimhuluv"><img className="w-6" src="https://cdn-icons-png.flaticon.com/512/270/270798.png" alt="" /></a>
-                                <a href="https://twitter.com/NarasimhuluV7"><img className="w-6" src="https://cdn-icons.flaticon.com/png/512/3025/premium/3025462.png?token=exp=1633928991~hmac=c9eaade5985b20c67a3ad09e88bb3157" alt="" /></a>
-                                <a href="https://www.linkedin.com/in/vasam-narasimhulu-8085901b3/"><img className="w-6" src="https://cdn-icons.flaticon.com/png/512/1377/premium/1377213.png?token=exp=1633929042~hmac=c67b527f3b4a2b0a724db4ebb2cdba2f" alt="" /></a>
-                            </div>
+                            <h5>Fav Articles</h5>
+                            <h4 className="font-extrabold">{this.props.favortedArticles.length}</h4>
                         </div>
                     </div>
     
@@ -190,7 +185,7 @@ class Profile extends React.Component {
                        this.state.activeTab === "favorited" ? (
                         fav.map((each) => (
 
-                                <FavoritedArticle  each={each}/>
+                            <FavoritedArticle  each={each}/>
                                 
                        ))
                        ) : ""
@@ -250,7 +245,7 @@ function FavoritedArticle(props){
     },[])
     return(
         <>
-            <article className="container  px-8 py-4 m-auto bg-white rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top" data-aos="zoom-in-right">
+            <article className="container  px-8 py-4 m-auto bg-white h-52 rounded-lg shadow-md border dark:bg-gray-800 my-10 each_article_top" data-aos="zoom-in-right">
                 <div className="flex items-center justify-between">
                     <span className="text-sm font-light text-gray-600 dark:text-gray-400">{moment(each.createdAt).format('L')}</span>
                 </div>
@@ -267,7 +262,7 @@ function FavoritedArticle(props){
 
                     <NavLink to={`/profiles/${each.author.username}`}>
                         <div className="flex items-center">
-                            <img className="hidden object-cover w-5 h-5 mx-4 rounded-full sm:block" src={each.author.image} alt="avatar" />
+                            <img className="hidden object-cover w-8 h-8 mx-4 rounded-full sm:block" src={each.author.image} alt="avatar" />
                             <p className="font-bold text-gray-700 cursor-pointer text-sm dark:text-gray-200">{each.author.username}</p>
                         </div>
                     </NavLink>
