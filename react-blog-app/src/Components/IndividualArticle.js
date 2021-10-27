@@ -21,10 +21,14 @@ class IndividualArticle extends React.Component{
         this.FetchEachArticle();
         this.fetchGetComments();
     }
-    // componentDidUpdate(_prevProps, prevState){
-    //     if(this.state.allcomments !== prevState.allcomments){
-    //         this.FetchEachArticle();
-    //     }
+    componentDidUpdate(_prevProps, prevState){
+        if(this.state.allcomments !== prevState.allcomments){
+            this.FetchEachArticle();
+            this.AddFavorite();
+        }
+    }
+    // componentDidUpdate(){
+    //     this.FetchEachArticle();
     // }
     FetchEachArticle = () => {
         var {slug} = this.props.match.params;
@@ -60,13 +64,9 @@ class IndividualArticle extends React.Component{
                 });
               } else {
                 console.log(res.json());
-                // window.location.reload();
+                res.json();
+                this.props.history.push(`/articles/${slug}`)
               }
-            }).then((data) => {
-                console.log(data)
-                this.setState({
-                    EachArticle : data.article
-                },this.FetchEachArticle)
             })
             .catch((errors) => {
               console.log(errors);
@@ -195,7 +195,7 @@ function AuthenticatedIndividualArticle(props){
                                     <div className="flex ml-4">
 
                                         {
-                                            favor  ? <p onClick={() => handleUnvorite(eachArticle.slug)} className="cursor-pointer"><img style={{width:"25px" , display:"inline-block"}} src="https://cdn-icons.flaticon.com/png/512/471/premium/471698.png?token=exp=1634063968~hmac=ecc4c5692a4eba07d49c76dfcf876f1b" alt="" />  </p> :  <p onClick={() => handleFavorite(eachArticle.slug)} className="cursor-pointer"><img style={{width:"25px" , display:"inline-block"}} src="https://cdn-icons-png.flaticon.com/512/263/263417.png" alt="" /></p>
+                                            favor  ? <p onClick={() => handleUnvorite(eachArticle.slug)} className="cursor-pointer"><i className="fas fa-heart"></i></p> :  <p onClick={() => handleFavorite(eachArticle.slug)} className="cursor-pointer"><img style={{width:"25px" , display:"inline-block"}} src="https://cdn-icons-png.flaticon.com/512/263/263417.png" alt="" /></p>
                                         }
                                         {
                                             // !favor ? <p onClick={() => handleFavorite(eachArticle.slug)} className="cursor-pointer"><img style={{width:"25px" , display:"inline-block"}} src="https://cdn-icons-png.flaticon.com/512/263/263417.png" alt="" /></p> : ""

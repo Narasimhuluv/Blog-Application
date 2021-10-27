@@ -145,7 +145,9 @@ function UnAthenticated(props){
             </Route>
 
             <Route exact path="/articles/:slug" component={IndividualArticle} />
-
+            <Route exact path="/profiles/:username">
+                <OtherProfile {...props}/>
+            </Route>
             <Route path="*">
                 <NotFound />
             </Route>
@@ -171,7 +173,7 @@ function Athenticated(props){
             </Route>
 
             <Route exact path="/articles/:slug" >
-                <IndividualArticle {...props} />
+                <IndividualArticle {...props} user={user}/>
                 {/* <Comments {...props}/> */}
             </Route>
 

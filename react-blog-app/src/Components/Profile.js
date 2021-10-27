@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import {ArticleApi, localStoragekey} from '../utls/ApiLinks';
 import moment from 'moment';
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+// import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
 
@@ -197,7 +197,6 @@ class Profile extends React.Component {
 }
 
 function UserArticle(props){
-
     useEffect(() => {
         Aos.init({duration : 2000});
     },[])
@@ -212,8 +211,8 @@ function UserArticle(props){
                                 <p><i className="far fa-edit ml-5 cursor-pointer text-xl text-yellow-500"></i></p>
                         </NavLink>
 
-                            <DeleteSweepIcon className="ml-3 cursor-pointer text-xl text-red-400" onClick={() => this.deleteArticle(each.slug)} />
-                            {/* <p><i className="far fa-delete ml-5 cursor-pointer text-xl text-yellow-700"></i></p> */}
+                            {/* <i className="far fa-delete ml-3 cursor-pointer text-xl text-red-400" onClick={() => this.deleteArticle(each.slug)}></i> */}
+                            <p onClick={() => this.deleteArticle(each.slug)}><i className="fas fa-trash ml-5 cursor-pointer text-xl text-red-400"></i></p>
                     </div>
                 </div>
         
